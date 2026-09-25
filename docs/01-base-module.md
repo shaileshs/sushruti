@@ -134,7 +134,7 @@ Notes:
 - NFR-2 Row-level security is on for every table. Only the two logged-in users can read or write.
 - NFR-3 The photo bucket is private. No public URLs.
 - NFR-4 Secrets stay in environment variables. They never enter the code repository.
-- NFR-5 The app shows a short notice that explains what data it stores and why (DPDP purpose limit). A lawyer reviews the text (client request N5).
+- NFR-5 The app shows a short notice that explains what data it stores and why (DPDP purpose limit). A lawyer reviews the text.
 - NFR-6 The data stays in India if the client's plan allows it (technical item V1). If not, we record this as a risk and the client decides.
 
 **Reliability**

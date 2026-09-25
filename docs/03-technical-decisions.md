@@ -41,7 +41,7 @@ Each item has a status:
 | O3 | Fields for grade and quality-of-life scores. | Placeholders now. Real scales later. | Client answers Q1 and Q2 |
 | O4 | Visit form fields. | Free text now. Real fields later. | Client request N1 |
 | O5 | Photo backup method, if the plan does not cover storage files. | Scheduled copy to a second bucket, or a script that runs on demand. | V2 |
-| O6 | Data retention and erasure behavior. | Archive only, or a hard delete with a delay. | Client answer Q6 and lawyer (N5) |
+| O6 | Data retention and erasure behavior. | Archive only, or a hard delete with a delay. | Client answer Q6 and lawyer review |
 
 ## 4. Engineering practices (defaults)
 

@@ -22,7 +22,7 @@ Write each question in plain words. Mark an item **Done** when answered, and mov
 | Q4 | Does one patient ever have more than one lesion that you measure? | One lesion per patient. |
 | Q5 | What else do you write down at each visit? For example: remedy, potency, dose, next visit date. | Not in the first release. |
 | Q6 | How long must you keep patient records? What do you do if a patient asks you to erase their data? | We only archive. Nothing is erased for good. |
-| Q7 | Do patients sign a consent form now? Do you have text for consent to store their case, and for research use? | We write a short draft for the lawyer (N5). |
+| Q7 | Do patients sign a consent form now? Do you have text for consent to store their case, and for research use? | We write a short draft for the lawyer. |
 | Q8 | Do you and the trainee enter data in English only? | English only. |
 
 ## 3. Needed later (ask early, because these take time)
