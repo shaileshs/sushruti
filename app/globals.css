@@ -3,3 +3,20 @@
 @theme inline {
   --font-sans: var(--font-geist-sans), system-ui, sans-serif;
 }
+
+/* Rendered Markdown from docs/. Tailwind resets element styles, so set the few we need. */
+.doc { line-height: 1.6; overflow-wrap: anywhere; }
+.doc h1 { @apply mb-3 text-2xl font-semibold text-slate-900; }
+.doc h2 { @apply mb-2 mt-8 text-xl font-semibold text-slate-900; }
+.doc h3 { @apply mb-2 mt-6 text-base font-semibold text-slate-900; }
+.doc p { @apply my-3 text-sm text-slate-700; }
+.doc ul { @apply my-3 list-disc space-y-1 pl-6 text-sm text-slate-700; }
+.doc ol { @apply my-3 list-decimal space-y-1 pl-6 text-sm text-slate-700; }
+.doc strong { @apply font-semibold text-slate-900; }
+.doc code { @apply rounded bg-slate-100 px-1 py-0.5 font-mono text-xs; }
+.doc pre { @apply my-3 overflow-x-auto rounded-lg bg-slate-100 p-3; }
+.doc pre code { @apply bg-transparent p-0; }
+.doc a { @apply text-teal-800 underline; }
+.doc table { @apply my-4 block w-full overflow-x-auto text-left text-sm; }
+.doc th { @apply whitespace-nowrap border-b border-slate-300 bg-slate-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-slate-600; }
+.doc td { @apply min-w-32 border-b border-slate-100 px-3 py-2 align-top text-slate-700; }

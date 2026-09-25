@@ -35,6 +35,10 @@ export function Nav() {
         Preview only
       </div>
       {preview.map(item)}
+      <div className="hidden px-3 pb-1 pt-4 text-xs font-semibold uppercase tracking-wide text-slate-500 md:block">
+        Reference
+      </div>
+      {item({ href: "/docs", label: "Project documents" })}
     </nav>
   );
 }
