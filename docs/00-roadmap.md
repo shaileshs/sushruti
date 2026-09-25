@@ -1,4 +1,4 @@
-# Clinical Assistant Platform — Roadmap
+# Invicta — Roadmap
 
 Status: Draft 1 · Source: `basics.md` and the scoping Q&A
 
