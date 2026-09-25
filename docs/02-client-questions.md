@@ -10,9 +10,7 @@ Write each question in plain words. Mark an item **Done** when answered, and mov
 |---|---------|----------------|--------------|
 | N1 | Your current case-taking form (paper, Word, or a photo of it) | The visit form in the app will copy your real form. | We use simple free-text fields. |
 | N2 | An email address for you and one for your trainee | Each person gets a separate login. | We cannot create logins. |
-| N3 | Create a Vercel account and a Supabase account in the client's name. We guide you step by step. | You own the accounts, the code, and the data. | We cannot put the app online. |
-| N4 | A phone with an authenticator app for you and for your trainee | Two-step login protects patient data. | We cannot turn on two-step login. |
-| N5 | A lawyer to review the privacy notice, the patient consent text, and your record-keeping rule under India's data protection law | Patient data is sensitive. A legal check protects you. | We write a short draft. It is not reviewed. |
+| N3 | A lawyer to review the privacy notice, the patient consent text, and your record-keeping rule under India's data protection law | Patient data is sensitive. A legal check protects you. | We write a short draft. It is not reviewed. |
 
 ## 2. Questions for the doctor (base module)
 
