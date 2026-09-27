@@ -6,6 +6,8 @@ Status: Draft 1 · Source: `basics.md` and the scoping Q&A
 
 A private web app for one homeopathy doctor and her trainee. It records oral and esophageal oncology cases, tracks patients over time, and later supports research. It is not a public product. Two users only.
 
+This is phase one of a larger system the client calls OCIS (Oncology Clinical Intelligence System). See `basics.md` §1 for the full long-term vision. This roadmap covers only what we build now.
+
 ## 2. Principles
 
 - Start with the smallest version that works end to end.
@@ -39,12 +41,20 @@ Each module has its own requirements document. We write it just before we build 
 | M5 Analytics | Charts of prescriptions, outcomes, and trends. | M1 | Not yet written |
 | M6 De-identification and export | Strip identity data. Export CSV or XLSX. | M1 | Not yet written |
 | M7 Automated ML | Scheduled analysis of de-identified data. | M6, enough data | Not yet written |
+| M8 Image/lesion analysis | AI analysis of lesion photos. Named in the vision as a separate module. | M1 | Not yet written |
 
 Notes on the order:
 
 - M6 comes before M7. Both need de-identification. Export is simpler and more useful first.
 - M4 needs a design review with the doctor. See gate G1.
 - M7 needs enough outcome data to mean anything. A new system has little data. Do not promise ML insight at go-live.
+- M8 comes after the base modules are stable. It is not part of the first release.
+
+Notes on scope growth (from the long-term vision, `basics.md` §1):
+
+- M2 may grow from a search database into a fuller knowledge base — organ affinity and oncology associations, not only remedy text search.
+- M3 may expand to pathology reports and to the patient's own words, not only endoscopy PDFs.
+- M4 as scoped here is a transparent rules and text-search score (see `03-technical-decisions.md`). The client's long-term ask is a clinical reasoning engine that weighs symptoms the way an experienced clinician does. That depends on her work observing Dr. Sunirmal Sarkar's consultations (client question N13) and is a separate, later effort — not a rewrite of M4.
 
 ## 5. Gates
 

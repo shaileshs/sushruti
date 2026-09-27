@@ -36,6 +36,7 @@ Write each question in plain words. Mark an item **Done** when answered, and mov
 | N10 | Matching | A written description of how you choose a remedy today. Which inputs count most? | We cannot design a "match" without this. |
 | N11 | Charts | The charts you want to see. For example: prescriptions per month, or lesion size change by remedy. | To avoid building charts nobody uses. |
 | N12 | Export | The journal formats you must meet, and which fields a journal needs | To design the export file. |
+| N13 | Matching / reasoning | Your timeline for observing Dr. Sunirmal Sarkar's consultations, and how many cases before you trust the patterns you see | Tells us when a real reasoning engine, not today's rules-based match, becomes possible |
 
 ## 4. Questions for the doctor (later modules)
 
@@ -46,6 +47,7 @@ Write each question in plain words. Mark an item **Done** when answered, and mov
 | Q11 | Export | Have patients agreed to research use of their anonymized data? |
 | Q12 | Export | Does a journal or an ethics committee need to approve your research? |
 | Q13 | Machine learning | How many patients do you expect in the first year? This tells us whether ML can give a useful result. |
+| Q14 | Matching / reasoning | Do you want Dr. Sarkar's case reasoning captured inside the app as structured notes, or kept in your own separate records for now? |
 
 ## 5. Answers received
 
