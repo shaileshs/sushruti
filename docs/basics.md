@@ -1,6 +1,6 @@
 # Client Basics
 
-Status: Source document. Two emails from the client, Dr. Shruti Shah, distilled. This is not a spec. See `00-roadmap.md` for what we build first.
+Status: Source document. Three messages from the client, Dr. Shruti Shah, distilled. This is not a spec. See `00-roadmap.md` for what we build first.
 
 ## 1. Long-term vision: OCIS
 
@@ -58,3 +58,28 @@ Her second email turned the vision above into a specific build request.
 - **Research analytics:** a live dashboard of prescription distributions, outcome trends, and efficacy curves.
 - **Automated ML:** a scheduled pipeline that strips all patient-identifying information, then trains on the anonymized data to surface long-term therapeutic patterns.
 - **Data export:** one-click download of filtered, anonymized data as CSV or XLSX, for journal submission.
+
+## 3. How remedy selection actually works (WhatsApp, 2026-09-27)
+
+A third message, from Dr. Shah, explains the clinical process the matching engine must support.
+
+### 3.1 The remedy library is a shortlist tool, not the decision-maker
+
+For a case there can be 50 or more candidate remedies, not 5. The library's job is to narrow this down to the most similar remedies. Picking the exact one, and the timing, needs Dr. Sunirmal Sarkar's judgment. The word for the single best-matching remedy at a given moment is **Similimum**. Finding it is the hard part of homeopathy — this is why she wants AI help.
+
+### 3.2 Treatment is a sequence, not one answer
+
+One remedy at a time is the rule, but a case is treated with a series of remedies given one after another as it "opens up" and responds. She compares it to chess: give a remedy, watch the reaction, then continue, repeat, change, or stop it and choose the next one. Unlike chess, there is no fixed small set of pieces with fixed roles — the same remedy can treat a common cold in one case and a life-threatening cancer in another. Selection depends entirely on the whole case, not the diagnosis alone.
+
+### 3.3 What information the Similimum needs
+
+- **Local and pathological detail.** Her example, tongue cancer: exact site, lesion color/texture/morphology, sensations, what aggravates or relieves the pain, taste, thirst, dryness, salivation, teeth and mucous membrane state, pain radiation, trouble opening the mouth or swallowing.
+- **Whole-person detail.** Physical build, emotional state, life events and addictions before the illness, food desires and aversions, thirst, bowels, perspiration, urinary symptoms, thermal sensitivity, menstrual/sexual history, sleep and dreams — hundreds of particulars — plus past and family medical history.
+
+### 3.4 The learning loop she wants
+
+The system should be patient-centric first, but it must also remember and learn from outcomes: where a prescription succeeded or failed. This should help analyze what went right or wrong for the next prescription, and help build treatment protocols over time. It is not a static reference tool.
+
+### 3.5 Research comes later, but the data model must be ready now
+
+She expects research to start in 2–3 years, not now. In her view, homeopathy lacks recognition because it lacks data and proof in a form modern science accepts. She wants the system to remember and arrange data by current research methodology from the start, so it can be extracted for research once enough time has passed.

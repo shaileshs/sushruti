@@ -13,9 +13,9 @@ Each item has a status:
 | # | Decision | Reason | Trade-off |
 |---|----------|--------|-----------|
 | T1 | Next.js (TypeScript) on Vercel. Supabase for Postgres, login, and photo storage. | Least work for two users. Supabase is standard Postgres, so we can move away. | Depends on two vendors. Later OCR or ML work may need a small Python worker. |
-| T2 | Two-step login (TOTP) for both users. No public sign-up. | Patient data is sensitive. | Users need an authenticator app. |
-| T3 | Session ends after 30 minutes of no use. | Shared clinic devices. | Users log in again more often. |
-| T4 | Row-level security on every table. | The database enforces access, not only the app. | Rules need tests. |
+| T2 | Two-step login (TOTP) for both users. No public sign-up. Deferred: built with the login module, not the first release (decision D8). | Patient data is sensitive. | Users need an authenticator app. |
+| T3 | Session ends after 30 minutes of no use. Deferred alongside T2 (decision D8). | Shared clinic devices. | Users log in again more often. |
+| T4 | Row-level security on every table. Deferred alongside T2 (decision D8) — until then, see NFR-13 in `01-base-module.md` (private network, test data only). | The database enforces access, not only the app. | Rules need tests. |
 | T5 | A database trigger writes the audit log. | The app cannot skip it. | Slightly more database code. |
 | T6 | Photos live in a private bucket. The app uses short-lived links. | No public URLs. | Links expire, so the app must refresh them. |
 | T7 | The app shrinks photos to 2000 px on the long side and removes GPS data before upload. | Smaller files. Location privacy. | A little client-side code. |
@@ -42,6 +42,7 @@ Each item has a status:
 | O4 | Visit form fields. | Free text now. Real fields later. | Client request N1 |
 | O5 | Photo backup method, if the plan does not cover storage files. | Scheduled copy to a second bucket, or a script that runs on demand. | V2 |
 | O6 | Data retention and erasure behavior. | Archive only, or a hard delete with a delay. | Client answer Q6 and lawyer review |
+| O7 | How the audit log tells the doctor and trainee apart, with no login (decision D8). | A simple "who am I" picker, not authentication, so each entry is attributed correctly; or accept one shared identity until login ships. | Decision D8 |
 
 ## 4. Engineering practices (defaults)
 

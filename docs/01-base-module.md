@@ -1,10 +1,12 @@
 # M1 Base Module — Requirements
 
-Status: Draft 1 · Depends on: nothing · See `00-roadmap.md` for decisions D1–D7.
+Status: Draft 1 · Depends on: nothing · See `00-roadmap.md` for decisions D1–D8.
 
 ## 1. Goal
 
-Two users log in and keep a complete record of each patient. They add visits, numeric measures, and lesion photos. They see change over time. All work happens on a laptop or a phone.
+The doctor and her trainee keep a complete record of each patient. They add visits, numeric measures, and lesion photos. They see change over time. All work happens on a laptop or a phone.
+
+This first build has no login (decision D8). Anyone who can open the app can use it. Section 4.1 covers what this means and what it does not cover yet.
 
 Success test: the doctor can run a real clinic day on this app, and the trainee can enter the same data without help.
 
@@ -15,22 +17,21 @@ Success test: the doctor can run a real clinic day on this app, and the trainee 
 | Doctor | Full access. |
 | Trainee | Same as doctor (decision D1). |
 
-There is no self sign-up. The client creates the two accounts in Supabase.
+There is no login and no accounts in this first build (decision D8). Both people share the same open app. Because of this, the audit log (4.8) cannot yet tell the doctor and the trainee apart — see open item O7 in `03-technical-decisions.md`.
 
 ## 3. Scope
 
-**In scope:** login, patient records, visit records, numeric measures, lesion photos, trend chart, search, consent record, audit log, archive and restore.
+**In scope:** patient records, visit records, numeric measures, lesion photos, trend chart, search, consent record, audit log, archive and restore.
 
-**Out of scope for M1:** remedy library, PDF extraction, matching, analytics, export, ML, data import, roles beyond "both users equal", multi-clinic use, patient login, notifications.
+**Out of scope for M1:** login and accounts (decision D8), remedy library, PDF extraction, matching, analytics, export, ML, data import, roles beyond "both users equal", multi-clinic use, patient login, notifications.
 
 ## 4. Functional requirements
 
-### 4.1 Login
+### 4.1 Login — deferred
 
-- FR-1 Users log in with email and password.
-- FR-2 Two-factor login (TOTP) is on for both users.
-- FR-3 A session ends after 30 minutes without use. The user logs in again.
-- FR-4 Only known accounts can log in. No public sign-up page.
+FR-1 to FR-4 (email/password login, two-factor login, session timeout, no public sign-up) are deferred to a later module, per decision D8. We build them once the rest of M1 is functional.
+
+Until then: **the app must not run on a public URL, and must not hold real patient data** (see NFR-13). It should run on a private network, or hold only invented or de-identified test data, until login ships.
 
 ### 4.2 Patients
 
@@ -98,7 +99,7 @@ If the doctor prefers photos on the patient only (client Q3), FR-21 to FR-27 cha
 
 ## 5. Screens
 
-1. Login
+1. Login — deferred (4.1). Not in this build.
 2. Patient list, with search and "New patient"
 3. New or edit patient
 4. Patient page: details, consent, trend charts, photo strip, visit list, audit log
@@ -131,7 +132,7 @@ Notes:
 **Security and privacy**
 
 - NFR-1 All traffic uses HTTPS.
-- NFR-2 Row-level security is on for every table. Only the two logged-in users can read or write.
+- NFR-2 Row-level security is on for every table. Only the two logged-in users can read or write. Deferred with login (decision D8) — see NFR-13.
 - NFR-3 The photo bucket is private. No public URLs.
 - NFR-4 Secrets stay in environment variables. They never enter the code repository.
 - NFR-5 The app shows a short notice that explains what data it stores and why (DPDP purpose limit). A lawyer reviews the text.
@@ -152,19 +153,24 @@ Notes:
 
 - NFR-12 Pages load in under 3 seconds on a normal mobile connection for up to 5,000 patients.
 
+**Interim safeguard, no login (decision D8)**
+
+- NFR-13 Until the login module ships, the app runs only on a private network or localhost, never a public URL, and holds only invented or de-identified test data. No real patient data goes in before login exists.
+
 ## 8. Acceptance tests
 
-1. A logged-out visitor cannot see any patient or photo, even with a direct link.
+1. Deferred to the login module (D8): a logged-out visitor cannot see any patient or photo, even with a direct link.
 2. The doctor creates a patient, adds a first visit with measures and two photos, and sees them on the patient page.
-3. The trainee logs in on a phone, adds a follow-up visit with a camera photo, and the doctor sees it.
+3. The trainee adds a follow-up visit on a phone with a camera photo, and the doctor sees it.
 4. A pain value of 11 is rejected.
 5. The trend charts show the correct points for three visits.
 6. An edit to a visit appears in that patient's audit log with old and new values.
 7. An archived patient disappears from the list and returns after restore.
 8. Search finds a patient by partial name, phone, and code.
 9. A photo taken with GPS data has no GPS data after upload.
-10. After 30 minutes of no use, the app asks for login.
+10. Deferred to the login module (D8): after 30 minutes of no use, the app asks for login.
 11. A test restore of the database backup succeeds.
+12. The app is confirmed to run only on a private network or localhost, per NFR-13, before any real patient data is entered.
 
 ## 9. Open questions for M1
 
@@ -173,6 +179,6 @@ Client questions and their defaults are in `02-client-questions.md`. Technical i
 ## 10. Risks
 
 - **Loss of patient data.** Backups must be tested. Photos need their own backup (NFR-8).
-- **Shared login.** If both users share one account, the audit log loses its value. Each user has a separate account.
+- **No login (D8).** Until the login module ships, anyone with access to the app or device can see and change everything, and the audit log cannot tell the doctor and trainee apart (O7). Mitigation: NFR-13 — private network only, test data only, until login exists.
 - **Placeholder scales.** If the doctor delays client Q1 and Q2 for months, the grade and QoL data may be inconsistent. Free text makes comparison hard. Ask again before M5.
 - **Scope creep.** Every new field the doctor requests adds work. Log requests and add them by module.
