@@ -1,6 +1,6 @@
 # Technical Decisions and Open Items
 
-Status: Draft 1 · For the engineering side only. We decide these without the client. Client questions are in `02-client-questions.md`.
+Status: Draft 1 · For the engineering side only. We decide these without the client. Client questions (N#, Q# ids referenced below) are tracked in `question-tracker.md`; what we've actually asked her is in `02-client-questions.md`.
 
 Each item has a status:
 

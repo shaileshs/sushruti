@@ -50,7 +50,7 @@ Until then: **the app must not run on a public URL, and must not hold real patie
 ### 4.4 Visits
 
 - FR-13 A user can add a visit to a patient. A visit has a date, a type (first visit or follow-up), and the case fields in FR-14.
-- FR-14 Case fields: chief complaint, history, symptoms, oral or esophageal findings, and notes. All are free text. **The final field list comes from the doctor's case form (N1 in `02-client-questions.md`). Update this section when we have it.**
+- FR-14 Case fields: chief complaint, history, symptoms, oral or esophageal findings, and notes. All are free text. **The final field list comes from the doctor's case form (N1 in `question-tracker.md`, asked now in `02-client-questions.md`). Update this section when we have it.**
 - FR-15 A user can edit a visit after saving. The audit log records each edit.
 - FR-16 A patient page shows visits in date order, newest first.
 - FR-17 A user can save a visit as a draft and finish it later.
@@ -174,7 +174,7 @@ Notes:
 
 ## 9. Open questions for M1
 
-Client questions and their defaults are in `02-client-questions.md`. Technical items are in `03-technical-decisions.md`. This document uses the default for each one until the answer arrives.
+What we're asking the client right now is in `02-client-questions.md`. Every question, its id, and its default is tracked in `question-tracker.md`. Technical items are in `03-technical-decisions.md`. This document uses the default for each one until the answer arrives.
 
 ## 10. Risks
 
