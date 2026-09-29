@@ -13,6 +13,10 @@ export type Visit = {
   pain: number;
   grade: string;
   qol: number; // 0-100, placeholder scale
+  rx?: { remedy: string; potency: string; dose: string; repetition: string };
+  decision?: string;
+  response?: string;
+  detail?: { title: string; items: string[] }[]; // filled fields from the case form
 };
 
 export type Patient = {
@@ -24,6 +28,7 @@ export type Patient = {
   phone: string;
   address: string;
   consentStorage: boolean;
+  consentPhoto: boolean;
   consentResearch: boolean;
   visits: Visit[];
 };
@@ -45,7 +50,7 @@ const v = (
 export const patients: Patient[] = [
   {
     id: "p1", code: "P-0001", name: "Meera Iyer", age: 58, sex: "F", phone: "98•••• 1042",
-    address: "Sample address, Pune", consentStorage: true, consentResearch: true,
+    address: "Sample address, Pune", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p1v1", "2026-05-06", "First visit", "Left buccal mucosa", 32, 7, "II", 48, "Non-healing ulcer for 3 months; burning on spicy food.", "Ulcero-proliferative lesion, firm edges, no trismus."),
       v("p1v2", "2026-06-03", "Follow-up", "Left buccal mucosa", 28, 6, "II", 55, "Pain slightly less. Eating is easier.", "Edges softer. Surface cleaner."),
@@ -55,7 +60,7 @@ export const patients: Patient[] = [
   },
   {
     id: "p2", code: "P-0002", name: "Ramesh Kulkarni", age: 64, sex: "M", phone: "97•••• 7781",
-    address: "Sample address, Nashik", consentStorage: true, consentResearch: true,
+    address: "Sample address, Nashik", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p2v1", "2026-04-22", "First visit", "Lower third esophagus", 45, 5, "III", 40, "Difficulty swallowing solids; weight loss.", "Endoscopy: circumferential growth, 45 mm."),
       v("p2v2", "2026-05-27", "Follow-up", "Lower third esophagus", 48, 6, "III", 38, "Pain on swallowing has increased.", "Slight increase in length."),
@@ -64,7 +69,7 @@ export const patients: Patient[] = [
   },
   {
     id: "p3", code: "P-0003", name: "Anita Deshmukh", age: 47, sex: "F", phone: "99•••• 3320",
-    address: "Sample address, Mumbai", consentStorage: true, consentResearch: false,
+    address: "Sample address, Mumbai", consentStorage: true, consentPhoto: true, consentResearch: false,
     visits: [
       v("p3v1", "2026-06-10", "First visit", "Right lateral border of tongue", 20, 6, "I", 60, "Painful patch on tongue for 2 months.", "Erythro-leukoplakic patch with small ulcer."),
       v("p3v2", "2026-07-15", "Follow-up", "Right lateral border of tongue", 18, 5, "I", 64, "Pain less at night.", "Ulcer healing at the centre."),
@@ -73,7 +78,7 @@ export const patients: Patient[] = [
   },
   {
     id: "p4", code: "P-0004", name: "Suresh Patel", age: 71, sex: "M", phone: "98•••• 5567",
-    address: "Sample address, Surat", consentStorage: true, consentResearch: true,
+    address: "Sample address, Surat", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p4v1", "2026-05-14", "First visit", "Mid esophagus", 38, 4, "II", 52, "Food sticks at mid chest.", "Ulcerated stricture, 38 mm."),
       v("p4v2", "2026-06-25", "Follow-up", "Mid esophagus", 35, 4, "II", 57, "Swallowing steady.", "Slight reduction."),
@@ -81,7 +86,7 @@ export const patients: Patient[] = [
   },
   {
     id: "p5", code: "P-0005", name: "Farida Sheikh", age: 52, sex: "F", phone: "90•••• 2214",
-    address: "Sample address, Hyderabad", consentStorage: true, consentResearch: true,
+    address: "Sample address, Hyderabad", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p5v1", "2026-07-02", "First visit", "Right gingivo-buccal sulcus", 26, 8, "II", 42, "Severe pain, cannot open mouth fully.", "Proliferative growth, mild trismus."),
       v("p5v2", "2026-08-06", "Follow-up", "Right gingivo-buccal sulcus", 24, 6, "II", 50, "Pain better with warm water rinses.", "Mouth opening slightly better."),
@@ -89,14 +94,14 @@ export const patients: Patient[] = [
   },
   {
     id: "p6", code: "P-0006", name: "Vikram Rao", age: 39, sex: "M", phone: "93•••• 8890",
-    address: "Sample address, Bengaluru", consentStorage: true, consentResearch: false,
+    address: "Sample address, Bengaluru", consentStorage: true, consentPhoto: true, consentResearch: false,
     visits: [
       v("p6v1", "2026-09-09", "First visit", "Left lateral border of tongue", 14, 3, "I", 72, "Rough spot on tongue, tobacco chewer.", "Small indurated ulcer."),
     ],
   },
   {
     id: "p7", code: "P-0007", name: "Lakshmi Nair", age: 66, sex: "F", phone: "94•••• 6103",
-    address: "Sample address, Kochi", consentStorage: true, consentResearch: true,
+    address: "Sample address, Kochi", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p7v1", "2026-06-17", "First visit", "Right buccal mucosa", 30, 6, "II", 50, "Ulcer with bleeding on brushing.", "Ulcero-proliferative, 30 mm."),
       v("p7v2", "2026-07-22", "Follow-up", "Right buccal mucosa", 27, 5, "II", 56, "Bleeding less.", "Reduced friability."),
@@ -105,13 +110,27 @@ export const patients: Patient[] = [
   },
   {
     id: "p8", code: "P-0008", name: "Arjun Menon", age: 55, sex: "M", phone: "96•••• 4471",
-    address: "Sample address, Chennai", consentStorage: true, consentResearch: true,
+    address: "Sample address, Chennai", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p8v1", "2026-08-03", "First visit", "Upper third esophagus", 33, 5, "II", 55, "Painful swallowing, hoarse voice.", "Polypoid growth, 33 mm."),
       v("p8v2", "2026-09-07", "Follow-up", "Upper third esophagus", 30, 4, "II", 60, "Voice clearer.", "Slight reduction."),
     ],
   },
 ];
+
+// Invented prescriptions so the timeline and the follow-up banner have something to show.
+const rx = (id: string, remedy: string, potency: string, decision: string, response?: string) => {
+  const vis = patients.flatMap((p) => p.visits).find((x) => x.id === id);
+  if (vis) Object.assign(vis, { rx: { remedy, potency, dose: "1 dose", repetition: "Single" }, decision, response });
+};
+rx("p1v1", "Arsenicum album", "30C", "Start");
+rx("p1v2", "Arsenicum album", "30C", "Continue", "Improved");
+rx("p1v3", "Arsenicum album", "200C", "Change", "Improved");
+rx("p1v4", "Arsenicum album", "200C", "Continue", "Improved");
+rx("p3v1", "Phosphorus", "30C", "Start");
+rx("p3v2", "Phosphorus", "30C", "Continue", "Improved");
+rx("p7v1", "Nitricum acidum", "30C", "Start");
+rx("p7v2", "Nitricum acidum", "30C", "Repeat", "Mixed");
 
 export const lastVisit = (p: Patient) => p.visits[p.visits.length - 1];
 export const findPatient = (id: string) => patients.find((p) => p.id === id);

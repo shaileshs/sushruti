@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geist.variable} h-full antialiased`}>
-      <body className="flex min-h-full flex-col bg-slate-50 text-slate-900">
+      <body className="flex min-h-full flex-col text-slate-900">
         <div className="bg-slate-900 px-4 py-1.5 text-center text-xs text-slate-100">
           Demo with sample data. All patients, photos, and numbers are invented. Nothing is saved.
           <TestGuide />

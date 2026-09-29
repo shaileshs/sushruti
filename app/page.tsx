@@ -1,56 +1,119 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDemo } from "@/components/demo-provider";
-import { PageHeader, btn, input } from "@/components/ui";
-import { fmtDate, lastVisit } from "@/lib/mock";
+import { btn } from "@/components/ui";
+import { Avatar, Sparkline } from "@/components/viz";
+import { fmtDate, lastVisit, type Patient } from "@/lib/mock";
+
+type Filter = "all" | "improving" | "attention";
+
+// Improving: lesion smaller than at the visit before. Attention: lesion larger, pain 6 or more, or a draft is open.
+const status = (p: Patient): Filter | "steady" => {
+  const l = p.visits[p.visits.length - 1];
+  const b = p.visits[p.visits.length - 2];
+  if (l.pain >= 6 || (b && l.sizeMm > b.sizeMm) || p.visits.some((v) => v.status === "draft")) return "attention";
+  return b && l.sizeMm < b.sizeMm ? "improving" : "steady";
+};
 
 export default function PatientList() {
   const { patients } = useDemo();
   const [q, setQ] = useState("");
+  const [f, setF] = useState<Filter>("all");
+  const box = useRef<HTMLInputElement>(null);
+
+  // "/" jumps to search, as in most modern apps.
+  useEffect(() => {
+    const on = (e: KeyboardEvent) => {
+      const tag = document.activeElement?.tagName;
+      if (e.key === "/" && tag !== "INPUT" && tag !== "TEXTAREA") { e.preventDefault(); box.current?.focus(); }
+    };
+    window.addEventListener("keydown", on);
+    return () => window.removeEventListener("keydown", on);
+  }, []);
+
   const term = q.trim().toLowerCase();
   const rows = patients
-    .filter((p) => !term || [p.name, p.phone, p.code].some((f) => f.toLowerCase().includes(term)))
+    .filter((p) => !term || [p.name, p.phone, p.code].some((x) => x.toLowerCase().includes(term)))
+    .filter((p) => f === "all" || status(p) === f)
     .sort((a, b) => +new Date(lastVisit(b).date) - +new Date(lastVisit(a).date));
+  const n = (k: Filter) => patients.filter((p) => k === "all" || status(p) === k).length;
+  const tabs: [Filter, string][] = [["all", "All"], ["improving", "Improving"], ["attention", "Needs attention"]];
 
   return (
     <>
-      <PageHeader
-        title="Patients"
-        sub="Sorted by last visit. Search by name, phone, or code."
-        action={<button className={btn} onClick={() => alert("In the real app this opens the new patient form.")}>New patient</button>}
-      />
-      <input className={`${input} mb-4 max-w-md`} placeholder="Search name, phone, or P-0001…" value={q} onChange={(e) => setQ(e.target.value)} />
-      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-slate-100 text-xs uppercase tracking-wide text-slate-500">
-            <tr>
-              <th className="px-4 py-3">Code</th>
-              <th className="px-4 py-3">Name</th>
-              <th className="hidden px-4 py-3 sm:table-cell">Age / sex</th>
-              <th className="hidden px-4 py-3 md:table-cell">Site</th>
-              <th className="px-4 py-3">Last visit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((p) => (
-              <tr key={p.id} className="border-t border-slate-100 hover:bg-teal-50">
-                <td className="px-4 py-3 font-mono text-xs text-slate-500">{p.code}</td>
-                <td className="px-4 py-3 font-medium">
-                  <Link href={`/patients/${p.id}`} className="text-teal-800 hover:underline">{p.name}</Link>
-                </td>
-                <td className="hidden px-4 py-3 sm:table-cell">{p.age} / {p.sex}</td>
-                <td className="hidden px-4 py-3 text-slate-600 md:table-cell">{lastVisit(p).site}</td>
-                <td className="px-4 py-3">{fmtDate(lastVisit(p).date)}</td>
-              </tr>
-            ))}
-            {rows.length === 0 && (
-              <tr><td colSpan={5} className="px-4 py-8 text-center text-slate-500">No patient matches “{q}”.</td></tr>
-            )}
-          </tbody>
-        </table>
+      <div className="rise mb-6 flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">Patients</h1>
+          <p className="mt-1 text-sm text-slate-600">Sorted by last visit. Search by name, phone, or code.</p>
+        </div>
+        <button className={btn} onClick={() => alert("In the real app this opens the new patient form.")}>+ New patient</button>
       </div>
+
+      <div className="rise mb-4 flex flex-wrap items-center gap-3" style={{ "--i": 1 } as React.CSSProperties}>
+        <div className="relative w-full max-w-md">
+          <svg viewBox="0 0 20 20" className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden><circle cx="9" cy="9" r="6" /><path d="m14 14 4 4" /></svg>
+          <input
+            ref={box} value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, phone, or P-0001…" aria-label="Search patients"
+            className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-9 pr-16 text-sm shadow-sm transition placeholder:text-slate-400 hover:border-slate-400 focus:border-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-600/15"
+          />
+          {q ? (
+            <button aria-label="Clear search" className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full px-2 text-slate-400 hover:bg-slate-100 hover:text-slate-700" onClick={() => setQ("")}>×</button>
+          ) : (
+            <kbd className="absolute right-3 top-1/2 -translate-y-1/2 rounded border border-slate-300 bg-slate-50 px-1.5 text-xs text-slate-400">/</kbd>
+          )}
+        </div>
+        <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Filter patients">
+          {tabs.map(([k, l]) => (
+            <button
+              key={k} role="tab" aria-selected={f === k} onClick={() => setF(k)}
+              className={`press rounded-full px-3.5 py-2 text-sm font-medium transition-colors ${f === k ? "bg-slate-900 text-white shadow" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-100"}`}
+            >
+              {l} <span className={`tnum ml-1 text-xs ${f === k ? "text-slate-300" : "text-slate-400"}`}>{n(k)}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <ul className="space-y-2">
+        {rows.map((p, i) => {
+          const l = lastVisit(p);
+          const s = status(p);
+          return (
+            <li key={p.id} className="rise" style={{ "--i": Math.min(i + 2, 10) } as React.CSSProperties}>
+              <Link href={`/patients/${p.id}`} className="lift group flex items-center gap-4 rounded-2xl border border-slate-200/80 bg-white/90 p-3.5 shadow-sm focus-visible:outline-2 focus-visible:outline-teal-600 sm:p-4">
+                <Avatar name={p.name} size={44} />
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+                    <span className="font-semibold text-slate-900 group-hover:text-teal-800">{p.name}</span>
+                    <span className="font-mono text-xs text-slate-400">{p.code}</span>
+                    {s === "improving" && <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">Improving</span>}
+                    {s === "attention" && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">Needs attention</span>}
+                  </div>
+                  <p className="truncate text-sm text-slate-500">{p.age} / {p.sex} · {l.site}</p>
+                </div>
+                <div className="hidden text-right sm:block">
+                  <p className="tnum text-sm font-medium text-slate-800">{l.sizeMm} mm</p>
+                  <p className="text-xs text-slate-400">pain {l.pain}/10</p>
+                </div>
+                <div className="hidden md:block"><Sparkline values={p.visits.map((v) => v.sizeMm)} color={s === "attention" ? "#d97706" : "#0f766e"} /></div>
+                <div className="text-right text-xs text-slate-500">
+                  <p className="text-slate-700">{fmtDate(l.date)}</p>
+                  <p>{p.visits.length} visit{p.visits.length > 1 ? "s" : ""}</p>
+                </div>
+                <span className="text-slate-300 transition-transform group-hover:translate-x-1 group-hover:text-teal-600" aria-hidden>›</span>
+              </Link>
+            </li>
+          );
+        })}
+        {rows.length === 0 && (
+          <li className="rise rounded-2xl border border-dashed border-slate-300 bg-white/60 px-4 py-12 text-center text-slate-500">
+            <p>No patient matches{q && <> “{q}”</>}{f !== "all" && " in this filter"}.</p>
+            <button className="mt-2 text-sm font-medium text-teal-700 hover:underline" onClick={() => { setQ(""); setF("all"); }}>Clear search and filter</button>
+          </li>
+        )}
+      </ul>
     </>
   );
 }
