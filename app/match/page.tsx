@@ -1,9 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { Accordion } from "@/components/controls";
 import { useDemo } from "@/components/demo-provider";
 import { Card, PageHeader, PreviewNote, input } from "@/components/ui";
+import { Avatar } from "@/components/viz";
 import { lastVisit, matchRows } from "@/lib/mock";
+
+const seg = ["bg-teal-600", "bg-sky-500", "bg-indigo-500", "bg-amber-500"];
 
 export default function Match() {
   const { patients } = useDemo();
@@ -19,37 +23,47 @@ export default function Match() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card title="Case" className="lg:col-span-1">
-          <select className={input} value={pid} onChange={(e) => { setPid(e.target.value); setOpen(0); }}>
-            {patients.map((x) => <option key={x.id} value={x.id}>{x.code} · {x.name}</option>)}
-          </select>
-          <dl className="mt-4 space-y-2 text-sm">
-            <div><dt className="text-xs uppercase text-slate-500">Site</dt><dd>{lv.site}</dd></div>
-            <div><dt className="text-xs uppercase text-slate-500">Size / pain</dt><dd>{lv.sizeMm} mm · {lv.pain}/10</dd></div>
-            <div><dt className="text-xs uppercase text-slate-500">Complaint</dt><dd>{lv.complaint}</dd></div>
-            <div><dt className="text-xs uppercase text-slate-500">Findings</dt><dd>{lv.findings}</dd></div>
+          <div className="mb-4 flex items-center gap-3">
+            <Avatar name={p.name} size={40} />
+            <select className={input} aria-label="Choose a patient" value={pid} onChange={(e) => { setPid(e.target.value); setOpen(0); }}>
+              {patients.map((x) => <option key={x.id} value={x.id}>{x.code} · {x.name}</option>)}
+            </select>
+          </div>
+          <dl key={p.id} className="rise space-y-3 text-sm">
+            {[["Site", lv.site], ["Size / pain", `${lv.sizeMm} mm · ${lv.pain}/10`], ["Complaint", lv.complaint], ["Findings", lv.findings]].map(([k, val]) => (
+              <div key={k}><dt className="text-xs font-semibold uppercase tracking-wider text-slate-500">{k}</dt><dd className="mt-0.5">{val}</dd></div>
+            ))}
           </dl>
         </Card>
 
         <Card title="Ranked remedies" className="lg:col-span-2">
+          <div className="mb-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-500">
+            {matchRows[0].inputs.map((inp, i) => <span key={inp.label} className="flex items-center gap-1.5"><span className={`h-2.5 w-2.5 rounded-sm ${seg[i]}`} />{inp.label}</span>)}
+          </div>
           <ol className="space-y-2">
             {matchRows.map((m, i) => (
-              <li key={m.remedy} className="rounded-lg border border-slate-200">
-                <button className="flex w-full items-center gap-3 p-3 text-left" onClick={() => setOpen(open === i ? -1 : i)}>
-                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-teal-700 text-sm font-semibold text-white">{i + 1}</span>
-                  <span className="flex-1 font-medium">{m.remedy}</span>
-                  <span className="text-sm text-slate-600">{m.total} / {m.max} points</span>
+              <li key={m.remedy} className={`rise rounded-xl border transition-colors ${open === i ? "border-teal-300 bg-teal-50/40" : "border-slate-200 bg-white"}`} style={{ "--i": i } as React.CSSProperties}>
+                <button className="flex w-full items-center gap-3 p-3 text-left" aria-expanded={open === i} onClick={() => setOpen(open === i ? -1 : i)}>
+                  <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-white ${i === 0 ? "bg-gradient-to-br from-amber-400 to-amber-600" : "bg-slate-400"}`}>{i + 1}</span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block font-medium">{m.remedy}</span>
+                    <span className="mt-1.5 flex h-2 overflow-hidden rounded-full bg-slate-100">
+                      {m.inputs.map((inp, k) => <span key={inp.label} className={`grow h-full ${seg[k]}`} style={{ width: `${(inp.points / m.max) * 100}%`, "--i": i } as React.CSSProperties} />)}
+                    </span>
+                  </span>
+                  <span className="tnum text-sm text-slate-600"><strong className="text-slate-900">{m.total}</strong> / {m.max}</span>
                 </button>
-                {open === i && (
-                  <ul className="space-y-2 border-t border-slate-100 p-3">
-                    {m.inputs.map((inp) => (
+                <Accordion open={open === i}>
+                  <ul className="space-y-3 border-t border-slate-100 p-3">
+                    {m.inputs.map((inp, k) => (
                       <li key={inp.label} className="text-sm">
-                        <div className="flex justify-between"><span className="font-medium">{inp.label}</span><span>{inp.points} / {inp.max}</span></div>
-                        <div className="mt-1 h-2 rounded bg-slate-100"><div className="h-2 rounded bg-teal-600" style={{ width: `${(inp.points / inp.max) * 100}%` }} /></div>
+                        <div className="flex justify-between"><span className="font-medium">{inp.label}</span><span className="tnum">{inp.points} / {inp.max}</span></div>
+                        <div className="mt-1 h-2 rounded-full bg-slate-100"><div className={`h-2 rounded-full ${seg[k]}`} style={{ width: `${(inp.points / inp.max) * 100}%` }} /></div>
                         <p className="mt-1 text-xs text-slate-500">{inp.why}</p>
                       </li>
                     ))}
                   </ul>
-                )}
+                </Accordion>
               </li>
             ))}
           </ol>

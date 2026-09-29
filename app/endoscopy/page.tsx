@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useDemo } from "@/components/demo-provider";
+import { Check } from "@/components/controls";
 import { Card, PageHeader, PreviewNote, btn, btnGhost } from "@/components/ui";
 
 const report = [
@@ -19,8 +21,10 @@ const fields = [
 ];
 
 type Step = "idle" | "reading" | "review";
+const steps = ["Upload", "Read", "Confirm"];
 
 export default function Endoscopy() {
+  const { notify } = useDemo();
   const [step, setStep] = useState<Step>("idle");
   const [ok, setOk] = useState<Record<string, boolean>>({});
 
@@ -37,51 +41,80 @@ export default function Endoscopy() {
     return (
       <>
         {text.slice(0, i)}
-        <mark className="rounded bg-yellow-200 px-0.5">{text.slice(i, i + hit.from.length)}</mark>
+        <mark className={`rounded px-0.5 transition-colors duration-500 ${ok[hit.name] ? "bg-emerald-200" : "bg-yellow-200"}`}>{text.slice(i, i + hit.from.length)}</mark>
         {text.slice(i + hit.from.length)}
       </>
     );
   };
+  const done = fields.filter((f) => ok[f.name]).length;
+  const at = step === "idle" ? 0 : step === "reading" ? 1 : 2;
 
   return (
     <>
       <PageHeader title="Endoscopy report reader" sub="Upload a hospital PDF. The tool suggests the key values. You confirm each one before it is saved." />
       <PreviewNote>Uses one invented report. The real tool is built and tested on your sample PDFs.</PreviewNote>
+
+      <ol className="mb-5 flex items-center gap-2 text-sm" aria-label="Progress">
+        {steps.map((s, i) => (
+          <li key={s} className="flex items-center gap-2">
+            <span className={`flex h-6 w-6 items-center justify-center rounded-full text-xs font-semibold transition-colors ${i < at ? "bg-emerald-500 text-white" : i === at ? "bg-teal-700 text-white" : "bg-slate-200 text-slate-500"}`}>{i < at ? <Check /> : i + 1}</span>
+            <span className={i === at ? "font-medium text-slate-900" : "text-slate-500"}>{s}</span>
+            {i < steps.length - 1 && <span className={`mx-1 h-0.5 w-8 rounded transition-colors ${i < at ? "bg-emerald-400" : "bg-slate-200"}`} />}
+          </li>
+        ))}
+      </ol>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <Card title="Report (PDF)">
-          <div className="space-y-3 rounded-lg border border-slate-300 bg-white p-4 font-serif text-sm leading-relaxed shadow-inner">
-            {report.map((line, i) => <p key={i} className={i < 2 ? "font-bold" : ""}>{highlight(line)}</p>)}
+          <div className="relative overflow-hidden rounded-xl border border-slate-300 bg-white p-5 font-serif text-sm leading-relaxed shadow-inner">
+            {step === "reading" && <div className="scan" aria-hidden />}
+            <div className="space-y-3">{report.map((line, i) => <p key={i} className={i < 2 ? "font-bold" : ""}>{highlight(line)}</p>)}</div>
           </div>
           <div className="mt-3 flex gap-2">
-            <button className={btn} onClick={run} disabled={step !== "idle"}>Read report</button>
+            <button className={btn} onClick={run} disabled={step !== "idle"}>{step === "reading" ? "Reading…" : "Read report"}</button>
             {step !== "idle" && <button className={btnGhost} onClick={reset}>Start over</button>}
           </div>
         </Card>
 
         <Card title="Suggested values">
-          {step === "idle" && <p className="py-10 text-center text-sm text-slate-500">Press “Read report” to see the suggested values.</p>}
-          {step === "reading" && <p className="py-10 text-center text-sm text-slate-600 animate-pulse">Reading the report…</p>}
+          {step === "idle" && <p className="py-12 text-center text-sm text-slate-500">Press “Read report” to see the suggested values.</p>}
+          {step === "reading" && (
+            <div className="space-y-3 py-2" aria-live="polite">
+              {fields.map((f) => <div key={f.name} className="h-20 animate-pulse rounded-xl bg-slate-100" />)}
+              <p className="text-center text-sm text-slate-500">Reading the report…</p>
+            </div>
+          )}
           {step === "review" && (
-            <ul className="space-y-3">
-              {fields.map((f) => (
-                <li key={f.name} className="rounded-lg border border-slate-200 p-3">
-                  <div className="text-xs uppercase tracking-wide text-slate-500">{f.name}</div>
-                  <div className="mt-0.5 font-medium">{f.value}</div>
-                  <div className="mt-1 text-xs text-slate-500">Found in text: “{f.from}”</div>
-                  <button
-                    className={`mt-2 rounded-lg px-3 py-1 text-sm font-medium ${ok[f.name] ? "bg-teal-100 text-teal-800" : "border border-slate-300 hover:bg-slate-100"}`}
-                    onClick={() => setOk({ ...ok, [f.name]: !ok[f.name] })}
-                  >
-                    {ok[f.name] ? "✓ Confirmed" : "Confirm"}
-                  </button>
-                </li>
-              ))}
-              <li>
-                <button className={btn} disabled={!fields.every((f) => ok[f.name])} onClick={() => alert("In the real app the confirmed values are saved to the patient's visit.")}>
-                  Save to visit
-                </button>
-              </li>
-            </ul>
+            <>
+              <div className="mb-3 flex items-center justify-between text-xs text-slate-500">
+                <span><strong className="tnum text-slate-800">{done}</strong> of {fields.length} confirmed</span>
+                <div className="h-1.5 w-28 overflow-hidden rounded-full bg-slate-200"><div className="h-full rounded-full bg-emerald-500 transition-[width] duration-500" style={{ width: `${(done / fields.length) * 100}%` }} /></div>
+              </div>
+              <ul className="space-y-3">
+                {fields.map((f, i) => (
+                  <li key={f.name} className={`rise rounded-xl border p-3 transition-colors ${ok[f.name] ? "border-emerald-300 bg-emerald-50/60" : "border-slate-200"}`} style={{ "--i": i } as React.CSSProperties}>
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <div className="text-xs font-semibold uppercase tracking-wider text-slate-500">{f.name}</div>
+                        <div className="mt-0.5 font-medium">{f.value}</div>
+                        <div className="mt-1 text-xs text-slate-500">Found in text: “{f.from}”</div>
+                      </div>
+                      <button
+                        aria-pressed={!!ok[f.name]}
+                        className={`press inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium transition-colors ${ok[f.name] ? "bg-emerald-600 text-white" : "border border-slate-300 bg-white hover:bg-slate-100"}`}
+                        onClick={() => setOk((o) => ({ ...o, [f.name]: !o[f.name] }))}
+                      >
+                        {ok[f.name] ? <><Check /> Confirmed</> : "Confirm"}
+                      </button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-4 flex items-center gap-3">
+                <button className={btn} disabled={done < fields.length} onClick={() => { notify("Confirmed values saved to the visit"); reset(); }}>Save to visit</button>
+                {done < fields.length && <span className="text-xs text-slate-500">Confirm every value to save.</span>}
+              </div>
+            </>
           )}
         </Card>
       </div>

@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { useDemo } from "@/components/demo-provider";
 import { Card, PageHeader, PreviewNote, btn, btnGhost } from "@/components/ui";
 import { exportRows } from "@/lib/mock";
 
+const removed = ["Name", "Phone", "Address", "Photos", "Exact dates", "Exact age"];
+
 export default function Export() {
+  const { notify } = useDemo();
   const [site, setSite] = useState("All");
   const sites = ["All", "Oral", "Esophagus"];
   const rows = exportRows.filter((r) => site === "All" || (site === "Esophagus" ? /esophag/i.test(r.site) : !/esophag/i.test(r.site)));
@@ -17,33 +21,46 @@ export default function Export() {
     a.download = "sample-anonymized-export.csv";
     a.click();
     URL.revokeObjectURL(a.href);
+    notify(`Downloaded ${rows.length} anonymized rows`);
   };
 
   return (
     <>
       <PageHeader title="Research export" sub="Download anonymized data for a journal. Names, phone, address, and photos are never included." />
       <PreviewNote>Sample rows from the invented patients. Only patients who agreed to research use appear.</PreviewNote>
-      <Card title="Filter" className="mb-4">
-        <div className="flex flex-wrap items-center gap-2">
-          {sites.map((s) => (
-            <button key={s} onClick={() => setSite(s)} className={`rounded-lg px-3 py-1.5 text-sm ${site === s ? "bg-teal-700 text-white" : "border border-slate-300 hover:bg-slate-100"}`}>{s}</button>
-          ))}
-          <span className="ml-auto text-sm text-slate-600">{rows.length} rows</span>
-        </div>
-      </Card>
+
+      <div className="mb-4 grid gap-4 lg:grid-cols-3">
+        <Card title="Filter by site" className="lg:col-span-2">
+          <div className="flex flex-wrap items-center gap-2" role="radiogroup" aria-label="Site filter">
+            {sites.map((s) => (
+              <button key={s} role="radio" aria-checked={site === s} onClick={() => setSite(s)} className={`press rounded-full px-4 py-2 text-sm font-medium transition-colors ${site === s ? "bg-slate-900 text-white shadow" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-100"}`}>{s}</button>
+            ))}
+            <span className="ml-auto text-sm text-slate-600"><strong className="tnum text-slate-900">{rows.length}</strong> rows</span>
+          </div>
+        </Card>
+        <Card title="Removed before export">
+          <div className="flex flex-wrap gap-1.5">
+            {removed.map((r) => <span key={r} className="rounded-full bg-rose-50 px-2.5 py-1 text-xs font-medium text-rose-800 line-through decoration-rose-300">{r}</span>)}
+          </div>
+        </Card>
+      </div>
+
       <Card title="Preview">
-        <div className="overflow-x-auto">
+        <div className="max-h-96 overflow-auto rounded-xl border border-slate-200">
           <table className="w-full text-left text-xs">
-            <thead className="text-slate-500"><tr>{cols.map((c) => <th key={c} className="whitespace-nowrap px-2 py-2 font-mono">{c}</th>)}</tr></thead>
+            <thead className="sticky top-0 bg-slate-100 text-slate-600"><tr>{cols.map((c) => <th key={c} className="whitespace-nowrap px-3 py-2.5 font-mono font-medium">{c}</th>)}</tr></thead>
             <tbody>
-              {rows.slice(0, 8).map((r, i) => (
-                <tr key={i} className="border-t border-slate-100">{cols.map((c) => <td key={c} className="whitespace-nowrap px-2 py-1.5">{r[c]}</td>)}</tr>
+              {rows.slice(0, 12).map((r, i) => (
+                <tr key={`${site}-${i}`} className="rise border-t border-slate-100 odd:bg-white even:bg-slate-50/60 hover:bg-teal-50" style={{ "--i": Math.min(i, 8) } as React.CSSProperties}>
+                  {cols.map((c) => <td key={c} className="tnum whitespace-nowrap px-3 py-2">{r[c]}</td>)}
+                </tr>
               ))}
             </tbody>
           </table>
         </div>
+        <p className="mt-2 text-xs text-slate-500">Showing {Math.min(12, rows.length)} of {rows.length} rows.</p>
         <div className="mt-4 flex gap-2">
-          <button className={btn} onClick={download}>Download CSV</button>
+          <button className={btn} onClick={download}>↓ Download CSV</button>
           <button className={btnGhost} disabled title="Preview">Download XLSX</button>
         </div>
         <p className="mt-3 text-xs text-slate-500">Identity is replaced by a subject code. Ages become bands. Dates become days from the first visit.</p>

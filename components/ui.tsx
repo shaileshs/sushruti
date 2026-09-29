@@ -23,8 +23,9 @@ export function Card({ title, children, className = "" }: { title?: string; chil
 
 export function PreviewNote({ children }: { children: ReactNode }) {
   return (
-    <p className="mb-5 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-      <strong>Preview.</strong> {children}
+    <p className="rise mb-5 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2.5 text-sm text-amber-900">
+      <span className="mt-0.5 rounded-full bg-amber-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">Preview</span>
+      <span>{children}</span>
     </p>
   );
 }
