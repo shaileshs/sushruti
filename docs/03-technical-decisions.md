@@ -39,7 +39,7 @@ Each item has a status:
 | O1 | Store measures inside `visits`, or in a separate `measures` table? | Inline: simpler. Separate: allows several lesions without a rewrite. | Client answer Q4 |
 | O2 | Photo model: attached to visits, or to patients. | Visit: shows change over time. Patient: simpler. | Client answer Q3 |
 | O3 | Fields for grade and quality-of-life scores. | Placeholders now. Real scales later. | Client answers Q1 and Q2 |
-| O4 | Visit form fields. | Free text now. Real fields later. | Client request N1 |
+| O4 | Visit form fields. | Decided: `04-form-definition.md`. Typed columns plus JSON. Revisit when the doctor reviews it. | — |
 | O5 | Photo backup method, if the plan does not cover storage files. | Scheduled copy to a second bucket, or a script that runs on demand. | V2 |
 | O6 | Data retention and erasure behavior. | Archive only, or a hard delete with a delay. | Client answer Q6 and lawyer review |
 | O7 | How the audit log tells the doctor and trainee apart, with no login (decision D8). | A simple "who am I" picker, not authentication, so each entry is attributed correctly; or accept one shared identity until login ships. | Decision D8 |

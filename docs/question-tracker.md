@@ -8,19 +8,19 @@ When an id gets answered: move the answer to the module doc that needs it, then 
 
 | id | Ask | Default if no answer |
 |----|-----|------------------------|
-| N1 | Send your case-taking form. | Free-text fields. |
-| Q5 | Record remedy, potency, dose per visit from the start, or add later? | Later. |
-| Q3 | Photos kept per visit, or per patient? | Per visit. |
-| Q4 | More than one lesion per patient, ever? | One lesion. |
+| Q1 | What is "Scoring" (her outline item 13)? Which QoL tool? | Pain, lesion size, TNM. |
+| Q5 | Record remedy, potency, dose per visit from the start? | Yes. |
+| Q3 | Photos kept per visit? | Per visit. |
+| Q4 | More than one lesion per patient? | One lesion. |
+| Q16 | Oral only, or esophageal too? | Oral first. |
+| Q8 | Patient language, and language she records in? | Store any script. |
 
 ## 2. Not sent yet — safe default, not blocking
 
 | id | Ask | Default |
 |----|-----|---------|
 | N2 | Login emails for doctor and trainee. | Not needed — no login in the first build (`00-roadmap.md` D8). |
-| Q1 | Grading scale (TNM, WHO, own)? | Placeholder field. |
-| Q2 | Quality-of-life scale? | Placeholder field. |
-| Q8 | English only for data entry? | English only. |
+| Q2 | Quality-of-life scale? | Folded into Q1. |
 
 ## 3. Later modules — ask when we start that module
 
@@ -61,7 +61,7 @@ Still exploring. Ask once we're closer to a real build with real patient data.
 | Login | Deferred to a later module (D8), not in the first build. |
 | Devices | Laptop and phone. |
 | Patient identity fields | Name, age/DOB, sex, phone, address. |
-| Case form | Will be shared (N1). |
+| Case form (N1) | Received: her outline plus the Word template. Built as a superset, see `04-form-definition.md`. |
 | Existing data | Start fresh, no import. |
 | Hosting | Vercel + Supabase, client's own accounts. |
 | Scales | Decide later. |

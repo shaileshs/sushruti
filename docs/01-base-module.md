@@ -44,13 +44,15 @@ Until then: **the app must not run on a public URL, and must not hold real patie
 
 ### 4.3 Consent
 
-- FR-11 Each patient has two consent records: (a) consent to store the case, (b) consent to use anonymized data for research. Each record has a yes or no value, a date, and an optional note.
-- FR-12 The system does not block work if consent (b) is "no." It only records the choice. Later modules must respect it (gate G2).
+- FR-11 Each patient has three consent records: (a) store the case, (b) take and store photos, (c) use anonymized data for research. Each record has a yes or no value, a date, and an optional note. A visit can also mark "consent and permitted use verified."
+- FR-12 The system does not block work if consent (c) is "no." It only records the choice. Later modules must respect it (gate G2).
 
 ### 4.4 Visits
 
 - FR-13 A user can add a visit to a patient. A visit has a date, a type (first visit or follow-up), and the case fields in FR-14.
-- FR-14 Case fields: chief complaint, history, symptoms, oral or esophageal findings, and notes. All are free text. **The final field list comes from the doctor's case form (N1 in `question-tracker.md`, asked now in `02-client-questions.md`). Update this section when we have it.**
+- FR-14 Case fields: the full list is in `04-form-definition.md`. It follows the doctor's 15-heading outline, plus optional template items. Fields we chart or filter are typed columns; the rest are structured JSON with a form version. Optional sections are collapsed by default. Oral cancer only; esophageal needs its own form (client Q5).
+- FR-14a Each visit can hold prescription events (remedy, potency, dose, repetition) and a decision (start, continue, repeat, change, withhold, investigate, refer). A follow-up visit shows the last prescription and response at the top.
+- FR-14b Measures have four states: value, absent, not assessed, not known. An empty cell is not a state.
 - FR-15 A user can edit a visit after saving. The audit log records each edit.
 - FR-16 A patient page shows visits in date order, newest first.
 - FR-17 A user can save a visit as a draft and finish it later.
@@ -114,10 +116,12 @@ All tables have `id`, `created_at`, `updated_at`, `created_by`, and `archived_at
 | Table | Main fields |
 |-------|-------------|
 | `patients` | `code`, `name`, `dob`, `age_years`, `sex`, `phone`, `address` |
-| `consents` | `patient_id`, `kind` (`storage` or `research`), `granted`, `date`, `note` |
-| `visits` | `patient_id`, `visit_date`, `visit_type`, `status` (`draft` or `final`), case fields (per client request N1) |
+| `consents` | `patient_id`, `kind` (`storage`, `photo`, or `research`), `granted`, `date`, `note`, `verified` |
+| `visits` | `patient_id`, `visit_date`, `visit_type`, `status` (`draft` or `final`), typed columns and JSON `case` (per `04-form-definition.md`), `form_version`, `clinician` |
 | `measures` | `visit_id`, `lesion_site`, `lesion_size_mm`, `lesion_size_mm_2`, `pain_0_10`, `clinical_grade`, `qol_scale`, `qol_score` |
-| `photos` | `visit_id`, `storage_path`, `site_label`, `note` |
+| `photos` | `visit_id`, `storage_path`, `site_label`, `view`, `consent`, `note` |
+| `visit_items` | `visit_id`, `kind`, `position`, `data` (JSON). Repeating lists: imaging, blood, complaints, and others. |
+| `prescriptions` | `visit_id`, `remedy`, `potency`, `dose`, `repetition`, `reason` |
 | `audit_log` | `table_name`, `record_id`, `action`, `old_values`, `new_values`, `user_id`, `at` |
 
 Notes:
@@ -145,7 +149,7 @@ Notes:
 
 **Usability**
 
-- NFR-9 A new patient and a first visit take under 5 minutes to enter with typical data.
+- NFR-9 The form works in steps on a phone and saves drafts. A first visit is long (see `04-form-definition.md`). We set a time target after the doctor tests it.
 - NFR-10 Forms save drafts, so a lost connection does not lose work.
 - NFR-11 English UI only.
 
