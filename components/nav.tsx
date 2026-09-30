@@ -38,7 +38,6 @@ export function Nav() {
       {n.label}
     </Link>
   );
-  const head = (t: string, pt = "pt-6") => <div className={`hidden px-2 pb-1.5 ${pt} text-[12px] text-stone-400 md:block`}>{t}</div>;
   return (
     <nav aria-label="Main" className="no-bar dash-b flex gap-1 overflow-x-auto px-3 py-2 md:dash-r md:w-60 md:shrink-0 md:flex-col md:overflow-visible md:border-b-0 md:p-5">
       <div className="flex shrink-0 items-center justify-between gap-2 md:pb-5">
@@ -49,12 +48,8 @@ export function Nav() {
         <div className="ml-auto hidden md:block"><ThemeToggle /></div>
       </div>
       <div className="dash-b hidden md:block" />
-      {head("Base module", "pt-4")}
-      {base.map(item)}
-      {head("Preview only")}
-      {preview.map(item)}
-      {head("Reference")}
-      {item(reference)}
+      <div className="hidden pt-2 md:block" />
+      {[...base, ...preview, reference].map(item)}
       <div className="ml-auto shrink-0 self-center md:hidden"><ThemeToggle /></div>
     </nav>
   );
