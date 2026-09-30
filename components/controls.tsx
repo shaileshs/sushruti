@@ -3,7 +3,7 @@
 import { useState, type ReactNode } from "react";
 import { MEASURE_STATES } from "@/lib/form";
 
-const ring = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600";
+const ring = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
 
 export const Check = () => (
   <svg viewBox="0 0 16 16" className="pop h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -30,7 +30,7 @@ export function Chips({ label, opts, value, multi, onChange }: { label: string; 
           type="button" key={o} role={multi ? undefined : "radio"} aria-checked={multi ? undefined : sel(o)} aria-pressed={multi ? sel(o) : undefined}
           onClick={() => click(o)}
           className={`press inline-flex items-center gap-1.5 rounded-full border px-3.5 py-2 text-sm transition-colors ${ring} ${
-            sel(o) ? "border-teal-700 bg-teal-700 text-white shadow-sm" : "border-slate-300 bg-white text-slate-700 hover:border-teal-500 hover:bg-teal-50"
+            sel(o) ? "border-accent bg-accent text-on-accent" : "border-line-strong bg-surface text-stone-700 hover:border-brand-500 hover:bg-brand-50"
           }`}
         >
           {sel(o) && <Check />}
@@ -61,10 +61,10 @@ export function PainScale({ id, value, disabled, onChange }: { id: string; value
           return (
             <button
               type="button" key={i} role="radio" aria-checked={on} tabIndex={on || (n === null && i === 0) ? 0 : -1} onClick={() => onChange(on ? "" : String(i))}
-              className={`press aspect-square rounded-lg text-sm font-semibold tnum transition-all ${ring} ${on ? "scale-110 text-white shadow-md" : "hover:scale-105"}`}
+              className={`press aspect-square rounded-lg text-sm font-semibold tnum transition-all ${ring} ${on ? "scale-110 text-white" : "hover:scale-105"}`}
               style={{
-                background: on ? `hsl(${painHue(i)} 65% 40%)` : `hsl(${painHue(i)} 70% 94%)`,
-                color: on ? "#fff" : `hsl(${painHue(i)} 60% 28%)`,
+                background: on ? `hsl(${painHue(i)} 60% 42%)` : `color-mix(in oklch, hsl(${painHue(i)} 65% 50%) 16%, transparent)`,
+                color: on ? "#fff" : `hsl(${painHue(i)} 55% 42%)`,
               }}
             >
               {i}
@@ -72,7 +72,7 @@ export function PainScale({ id, value, disabled, onChange }: { id: string; value
           );
         })}
       </div>
-      <p className="mt-1.5 h-4 text-xs text-slate-500">{n === null ? "Tap a number. Arrow keys also work." : `${n} · ${painWord(n)}`}</p>
+      <p className="mt-1.5 h-4 text-xs text-stone-500">{n === null ? "Tap a number. Arrow keys also work." : `${n} · ${painWord(n)}`}</p>
     </div>
   );
 }
@@ -81,7 +81,7 @@ export function StateSelect({ label, value, onChange }: { label: string; value: 
   return (
     <select
       aria-label={`${label}: value or state`} value={value} onChange={(e) => onChange(e.target.value)}
-      className={`rounded-xl border px-2 text-sm shadow-sm ${ring} ${value === "Value" ? "border-slate-300 bg-white text-slate-500" : "border-amber-300 bg-amber-50 text-amber-900"}`}
+      className={`rounded-xl border px-2 text-sm ${ring} ${value === "Value" ? "border-line-strong bg-surface text-stone-500" : "border-amber-300 bg-amber-50 text-amber-900"}`}
     >
       {MEASURE_STATES.map((s) => <option key={s}>{s}</option>)}
     </select>
@@ -103,20 +103,20 @@ export function NumberField({
   const n = Number(value);
   const delta = prev !== undefined && value !== "" && !Number.isNaN(n) ? Math.round((n - prev) * 10) / 10 : null;
   const good = delta !== null && delta !== 0 && (delta < 0) === !!goodDown;
-  const btn = `press flex h-full w-10 items-center justify-center text-lg text-slate-500 hover:bg-slate-100 hover:text-teal-700 disabled:opacity-40 ${ring}`;
+  const btn = `press flex h-full w-10 items-center justify-center text-lg text-stone-500 hover:bg-stone-100 hover:text-brand-700 disabled:opacity-40 ${ring}`;
   return (
     <div>
-      <div className={`flex h-11 items-stretch overflow-hidden rounded-xl border border-slate-300 bg-white shadow-sm transition focus-within:border-teal-600 focus-within:ring-4 focus-within:ring-teal-600/15 ${disabled ? "bg-slate-50" : ""}`}>
+      <div className={`flex h-11 items-stretch overflow-hidden rounded-xl border border-line-strong bg-surface transition focus-within:border-accent focus-within:ring-4 focus-within:ring-accent/15 ${disabled ? "bg-stone-50" : ""}`}>
         <button type="button" className={btn} aria-label="Decrease" disabled={disabled} onClick={() => nudge(-step)}>−</button>
         <input
           id={id} inputMode="decimal" disabled={disabled} placeholder={placeholder ?? (prev !== undefined ? `Last: ${prev}` : "")}
           value={disabled ? "" : value} onChange={(e) => onChange(e.target.value)}
-          className="tnum min-w-0 flex-1 bg-transparent text-center text-base outline-none placeholder:text-slate-400 disabled:cursor-not-allowed"
+          className="tnum min-w-0 flex-1 bg-transparent text-center text-base outline-none placeholder:text-stone-400 disabled:cursor-not-allowed"
         />
-        {unit && <span className="flex items-center pr-1 text-xs text-slate-400">{unit}</span>}
+        {unit && <span className="flex items-center pr-1 text-xs text-stone-400">{unit}</span>}
         <button type="button" className={btn} aria-label="Increase" disabled={disabled} onClick={() => nudge(step)}>+</button>
       </div>
-      <p key={bump} className={`mt-1 h-4 text-xs ${delta === null ? "" : delta === 0 ? "text-slate-500" : good ? "text-emerald-700" : "text-rose-700"}`}>
+      <p key={bump} className={`mt-1 h-4 text-xs ${delta === null ? "" : delta === 0 ? "text-stone-500" : good ? "text-emerald-700" : "text-rose-700"}`}>
         {delta === null ? "" : delta === 0 ? `No change from last (${prev})` : `${delta < 0 ? "▼" : "▲"} ${Math.abs(delta)}${unit ? ` ${unit}` : ""} vs last (${prev})`}
       </p>
     </div>

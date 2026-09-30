@@ -11,16 +11,16 @@ export function Avatar({ name, size = 40 }: { name: string; size?: number }) {
   return (
     <span
       aria-hidden
-      className="inline-flex shrink-0 items-center justify-center rounded-full font-semibold text-white shadow-inner"
-      style={{ width: size, height: size, fontSize: size * 0.38, background: `linear-gradient(135deg, hsl(${h} 60% 48%), hsl(${(h + 40) % 360} 65% 38%))` }}
+      className="inline-flex shrink-0 items-center justify-center rounded-full font-medium ring-1 ring-inset ring-line"
+      style={{ width: size, height: size, fontSize: size * 0.36, color: `hsl(${h} 45% 46%)`, background: `color-mix(in oklch, hsl(${h} 55% 50%) 16%, transparent)` }}
     >
       {initials}
     </span>
   );
 }
 
-export function Sparkline({ values, color = "#0f766e", w = 84, h = 28 }: { values: number[]; color?: string; w?: number; h?: number }) {
-  if (values.length < 2) return <span className="text-xs text-slate-400">–</span>;
+export function Sparkline({ values, color = "#5f7a58", w = 84, h = 28 }: { values: number[]; color?: string; w?: number; h?: number }) {
+  if (values.length < 2) return <span className="text-xs text-stone-400">–</span>;
   const min = Math.min(...values), max = Math.max(...values), span = max - min || 1;
   const pts = values.map((v, i) => [3 + (i / (values.length - 1)) * (w - 6), 3 + (1 - (v - min) / span) * (h - 6)]);
   const last = pts[pts.length - 1];
@@ -54,16 +54,16 @@ export function Compare({ a, b }: { a: { label: string; sizeMm: number; seed: nu
   const [x, setX] = useState(50);
   return (
     <div>
-      <div className="relative aspect-[4/3] w-full select-none overflow-hidden rounded-xl border border-slate-200">
+      <div className="relative aspect-[4/3] w-full select-none overflow-hidden rounded-xl border border-line">
         <LesionImage sizeMm={b.sizeMm} seed={b.seed} className="absolute inset-0 h-full w-full" />
         <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - x}% 0 0)` }}>
           <LesionImage sizeMm={a.sizeMm} seed={a.seed} className="h-full w-full" />
         </div>
-        <div className="pointer-events-none absolute inset-y-0 w-0.5 bg-white shadow" style={{ left: `${x}%` }}>
-          <span className="absolute left-1/2 top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-xs text-slate-600 shadow-lg">↔</span>
+        <div className="pointer-events-none absolute inset-y-0 w-0.5 bg-surface" style={{ left: `${x}%` }}>
+          <span className="absolute left-1/2 top-1/2 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-surface text-xs text-stone-600 shadow-lg">↔</span>
         </div>
-        <span className="absolute bottom-2 left-2 rounded-full bg-slate-900/70 px-2 py-0.5 text-xs text-white">{a.label} · {a.sizeMm} mm</span>
-        <span className="absolute bottom-2 right-2 rounded-full bg-slate-900/70 px-2 py-0.5 text-xs text-white">{b.label} · {b.sizeMm} mm</span>
+        <span className="absolute bottom-2 left-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white">{a.label} · {a.sizeMm} mm</span>
+        <span className="absolute bottom-2 right-2 rounded-full bg-black/60 px-2 py-0.5 text-xs text-white">{b.label} · {b.sizeMm} mm</span>
         <input
           type="range" min={0} max={100} value={x} onChange={(e) => setX(Number(e.target.value))}
           aria-label="Compare first and latest photo" className="absolute inset-0 h-full w-full cursor-ew-resize opacity-0"

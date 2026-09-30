@@ -17,8 +17,8 @@ export default async function DocPage(props: PageProps<"/docs/[slug]">) {
 
   return (
     <>
-      <Link href="/docs" className="mb-4 inline-block text-sm text-teal-800 hover:underline">← All documents</Link>
-      <article className="doc rise max-w-4xl rounded-2xl border border-slate-200/80 bg-white/90 p-5 shadow-sm md:p-8">
+      <Link href="/docs" className="mb-4 inline-block text-sm text-brand-800 hover:underline">← All documents</Link>
+      <article className="doc rise max-w-4xl rounded-2xl border border-line bg-surface/90 p-5 md:p-8">
         <Markdown remarkPlugins={[remarkGfm]}>{doc.source}</Markdown>
       </article>
     </>

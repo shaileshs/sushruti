@@ -111,24 +111,24 @@ function VisitForm({ p }: { p: Patient }) {
     <>
       <div className="flex flex-wrap gap-3">
         {photos.map((ph, i) => (
-          <div key={i} className="pop w-36 rounded-xl border border-slate-200 bg-white p-2 shadow-sm">
+          <div key={i} className="pop w-36 rounded-xl border border-line bg-surface p-2">
             <div className="relative">
               <LesionImage sizeMm={size || prev.sizeMm} seed={i + 7} className="h-32 w-full rounded-lg" />
-              <button type="button" aria-label="Remove photo" className="press absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-slate-900/60 text-white hover:bg-rose-600" onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>×</button>
+              <button type="button" aria-label="Remove photo" className="press absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-full bg-black/60 text-white hover:bg-rose-600" onClick={() => setPhotos(photos.filter((_, j) => j !== i))}>×</button>
             </div>
             <select className={`${input} mt-2 !py-1.5`} aria-label="Photo view" value={ph.view} onChange={(e) => setPhotos(photos.map((x, j) => (j === i ? { ...x, view: e.target.value } : x)))}>
               {PHOTO_VIEWS.map((o) => <option key={o}>{o}</option>)}
             </select>
-            <label className="mt-2 flex cursor-pointer items-center gap-1.5 text-xs text-slate-600">
-              <input type="checkbox" className="accent-teal-700" checked={ph.consent} onChange={(e) => setPhotos(photos.map((x, j) => (j === i ? { ...x, consent: e.target.checked } : x)))} /> Photo consent
+            <label className="mt-2 flex cursor-pointer items-center gap-1.5 text-xs text-stone-600">
+              <input type="checkbox" className="accent-brand-700" checked={ph.consent} onChange={(e) => setPhotos(photos.map((x, j) => (j === i ? { ...x, consent: e.target.checked } : x)))} /> Photo consent
             </label>
           </div>
         ))}
-        <button type="button" className="press flex h-40 w-36 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-slate-300 text-sm text-slate-500 hover:border-teal-600 hover:bg-teal-50 hover:text-teal-700" onClick={() => setPhotos([...photos, { view: "Front", consent: p.consentPhoto }])}>
+        <button type="button" className="press flex h-40 w-36 flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-line-strong text-sm text-stone-500 hover:border-brand-600 hover:bg-brand-50 hover:text-brand-700" onClick={() => setPhotos([...photos, { view: "Front", consent: p.consentPhoto }])}>
           <span className="text-2xl leading-none">+</span>Add photo
         </button>
       </div>
-      <p className="mt-3 text-xs text-slate-500">On a phone this button opens the camera or photo library. Photos are shrunk and stripped of location data.{!p.consentPhoto && " This patient has not given photo consent."}</p>
+      <p className="mt-3 text-xs text-stone-500">On a phone this button opens the camera or photo library. Photos are shrunk and stripped of location data.{!p.consentPhoto && " This patient has not given photo consent."}</p>
     </>
   );
 
@@ -137,7 +137,7 @@ function VisitForm({ p }: { p: Patient }) {
       <div className="rise mb-5 flex flex-wrap items-center gap-4">
         <Avatar name={p.name} size={48} />
         <div className="min-w-0 flex-1">
-          <p className="text-sm text-slate-500"><Link href={`/patients/${p.id}`} className="hover:underline">← {p.name}</Link> · {p.code}</p>
+          <p className="text-sm text-stone-500"><Link href={`/patients/${p.id}`} className="hover:underline">← {p.name}</Link> · {p.code}</p>
           <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">New visit</h1>
         </div>
       </div>
@@ -149,26 +149,26 @@ function VisitForm({ p }: { p: Patient }) {
         </div>
       )}
 
-      <div className="rise mb-5 rounded-2xl border border-teal-200 bg-gradient-to-br from-teal-50 to-white px-4 py-3 text-sm text-teal-950" style={{ "--i": 1 } as React.CSSProperties}>
-        <p className="text-xs font-semibold uppercase tracking-wider text-teal-700">Last visit · {fmtDate(prev.date)}</p>
+      <div className="rise mb-5 rounded-2xl border border-brand-200 bg-brand-50 px-4 py-3 text-sm text-brand-950" style={{ "--i": 1 } as React.CSSProperties}>
+        <p className="text-xs font-semibold text-brand-700">Last visit · {fmtDate(prev.date)}</p>
         <p className="mt-1">
           {prev.rx ? <strong>{prev.rx.remedy} {prev.rx.potency}</strong> : "No prescription recorded"}
           {prev.rx && `, ${prev.rx.dose}, ${prev.rx.repetition.toLowerCase()}`}
-          {prev.decision && <span className="ml-2 rounded-full bg-teal-100 px-2 py-0.5 text-xs">{prev.decision}</span>}
-          {prev.response && <span className="ml-1 rounded-full bg-sky-100 px-2 py-0.5 text-xs text-sky-900">{prev.response}</span>}
+          {prev.decision && <span className="ml-2 rounded-full bg-brand-100 px-2 py-0.5 text-xs">{prev.decision}</span>}
+          {prev.response && <span className="ml-1 rounded-full bg-gold-100 px-2 py-0.5 text-xs text-gold-900">{prev.response}</span>}
         </p>
-        <p className="mt-1 text-xs text-teal-800">{prev.sizeMm} mm · pain {prev.pain}/10 · QoL {prev.qol}</p>
+        <p className="mt-1 text-xs text-brand-800">{prev.sizeMm} mm · pain {prev.pain}/10 · QoL {prev.qol}</p>
       </div>
 
       <CaseForm v={v} st={st} setV={setV} setSt={setSt} errors={errors} showSince prev={prevNums} baseline={{ site: prev.site, stage: prev.grade }} extra={{ id: "photos", n: "P", title: "Photos", node: photoNode }} />
 
-      <p className="mt-6 text-xs text-slate-500">
+      <p className="mt-6 text-xs text-stone-500">
         Urgent bleeding, breathing difficulty, inability to swallow fluids, dehydration or fast swelling needs prompt medical care. This app never delays urgent care.
       </p>
 
-      <div className="sticky bottom-0 z-30 -mx-4 mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-white/85 px-4 py-3 backdrop-blur md:-mx-8 md:px-8">
-        <span className="flex items-center gap-2 text-xs text-slate-500" aria-live="polite">
-          <span className={`h-2 w-2 rounded-full ${autoAt ? "live-dot bg-emerald-500" : "bg-slate-300"}`} />
+      <div className="sticky bottom-0 z-30 -mx-4 mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-line bg-surface/85 px-4 py-3 backdrop-blur md:-mx-10 md:px-10">
+        <span className="flex items-center gap-2 text-xs text-stone-500" aria-live="polite">
+          <span className={`h-2 w-2 rounded-full ${autoAt ? "live-dot bg-emerald-500" : "bg-stone-300"}`} />
           {autoAt ? `Draft autosaved at ${autoAt}` : "Changes autosave as you type"}
         </span>
         <div className="flex gap-2">

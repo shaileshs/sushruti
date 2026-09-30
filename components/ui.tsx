@@ -1,11 +1,14 @@
 import type { ReactNode } from "react";
 
-export function PageHeader({ title, sub, action }: { title: string; sub?: string; action?: ReactNode }) {
+export function PageHeader({ title, sub, action, no }: { title: string; sub?: string; action?: ReactNode; no?: string }) {
   return (
-    <div className="rise mb-6 flex flex-wrap items-start justify-between gap-3">
+    <div className="rise dash-b mb-8 flex flex-wrap items-end justify-between gap-3 pb-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-900 md:text-3xl">{title}</h1>
-        {sub && <p className="mt-1 max-w-2xl text-sm text-slate-600">{sub}</p>}
+        <h1 className="flex items-baseline gap-3 text-2xl font-semibold text-stone-900 md:text-[28px]">
+          {no && <span className="font-mono text-xs font-normal tracking-normal text-stone-400">{no}</span>}
+          {title}
+        </h1>
+        {sub && <p className="mt-2 max-w-2xl text-sm text-stone-500">{sub}</p>}
       </div>
       {action}
     </div>
@@ -14,8 +17,8 @@ export function PageHeader({ title, sub, action }: { title: string; sub?: string
 
 export function Card({ title, children, className = "" }: { title?: string; children: ReactNode; className?: string }) {
   return (
-    <section className={`rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-[0_1px_2px_rgb(15_23_42/0.04),0_10px_28px_-16px_rgb(15_23_42/0.12)] backdrop-blur ${className}`}>
-      {title && <h2 className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">{title}</h2>}
+    <section className={`rounded-2xl border border-line bg-surface p-4 md:p-5 ${className}`}>
+      {title && <h2 className="mb-3 text-[13px] font-semibold text-stone-900">{title}</h2>}
       {children}
     </section>
   );
@@ -23,15 +26,15 @@ export function Card({ title, children, className = "" }: { title?: string; chil
 
 export function PreviewNote({ children }: { children: ReactNode }) {
   return (
-    <p className="rise mb-5 flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50/80 px-3 py-2.5 text-sm text-amber-900">
-      <span className="mt-0.5 rounded-full bg-amber-200 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider">Preview</span>
+    <p className="rise mb-6 flex items-start gap-2.5 rounded-xl border border-dashed border-line-strong bg-stone-50 px-3 py-2.5 text-[13px] text-stone-600">
+      <span className="mt-px rounded-full bg-gold-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-gold-800">Preview</span>
       <span>{children}</span>
     </p>
   );
 }
 
-const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-600";
-export const btn = `press inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-b from-teal-600 to-teal-700 px-4 py-2.5 text-sm font-semibold text-white shadow-sm shadow-teal-900/25 ring-1 ring-inset ring-white/10 hover:from-teal-500 hover:to-teal-700 disabled:cursor-not-allowed disabled:opacity-50 ${focus}`;
-export const btnGhost = `press inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm font-medium text-slate-800 shadow-sm hover:border-slate-400 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 ${focus}`;
+const focus = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+export const btn = `press inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2 text-[13.5px] font-medium text-on-accent hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50 ${focus}`;
+export const btnGhost = `press inline-flex items-center justify-center gap-2 rounded-full border border-line-strong bg-surface px-4 py-2 text-[13.5px] font-medium text-stone-800 hover:bg-stone-100 disabled:cursor-not-allowed disabled:opacity-50 ${focus}`;
 export const input =
-  "w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 hover:border-slate-400 focus:border-teal-600 focus:outline-none focus:ring-4 focus:ring-teal-600/15";
+  "w-full rounded-xl border border-line-strong bg-surface px-3 py-2.5 text-sm text-stone-900 transition placeholder:text-stone-400 hover:border-stone-400 focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/15";

@@ -1,11 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 const ic = (d: string): ReactNode => (
-  <svg viewBox="0 0 20 20" className="h-[18px] w-[18px] shrink-0" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+  <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
     <path d={d} />
   </svg>
 );
@@ -28,27 +30,32 @@ export function Nav() {
       key={n.href}
       href={n.href}
       aria-current={active(n.href) ? "page" : undefined}
-      className={`press relative flex items-center gap-2.5 whitespace-nowrap rounded-xl px-3 py-2 text-sm font-medium transition-colors ${
-        active(n.href) ? "bg-teal-50 text-teal-900 md:before:absolute md:before:-left-4 md:before:top-2 md:before:h-5 md:before:w-1 md:before:rounded-r md:before:bg-teal-600" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+      className={`press flex items-center gap-2.5 whitespace-nowrap rounded-[7px] px-2 py-[5px] text-[13.5px] transition-colors ${
+        active(n.href) ? "bg-stone-100 font-medium text-stone-900" : "text-stone-500 hover:bg-stone-50 hover:text-stone-900"
       }`}
     >
-      {n.icon}
+      <span className={active(n.href) ? "text-accent" : ""}>{n.icon}</span>
       {n.label}
     </Link>
   );
-  const head = (t: string, pt = "pt-5") => <div className={`hidden px-3 pb-1 ${pt} text-[11px] font-semibold uppercase tracking-wider text-slate-400 md:block`}>{t}</div>;
+  const head = (t: string, pt = "pt-6") => <div className={`hidden px-2 pb-1.5 ${pt} text-[12px] text-stone-400 md:block`}>{t}</div>;
   return (
-    <nav aria-label="Main" className="no-bar flex gap-1 overflow-x-auto border-b border-slate-200 bg-white/80 px-3 py-2 backdrop-blur md:w-60 md:shrink-0 md:flex-col md:overflow-visible md:border-b-0 md:border-r md:p-4">
-      <div className="flex shrink-0 items-center gap-2 px-3 py-2 text-lg font-semibold text-teal-900 md:pb-3 md:pt-0">
-        <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-teal-500 to-teal-800 text-sm text-white shadow">I</span>
-        Invicta
+    <nav aria-label="Main" className="no-bar dash-b flex gap-1 overflow-x-auto px-3 py-2 md:dash-r md:w-60 md:shrink-0 md:flex-col md:overflow-visible md:border-b-0 md:p-5">
+      <div className="flex shrink-0 items-center justify-between gap-2 md:pb-5">
+        <div className="flex items-center gap-2 pr-2 text-[15px] font-semibold tracking-tight text-stone-900">
+          <Image src="/logo-128.png" alt="" width={40} height={40} className="h-10 w-10" priority />
+          Invicta
+        </div>
+        <div className="ml-auto hidden md:block"><ThemeToggle /></div>
       </div>
-      {head("Base module", "pt-1")}
+      <div className="dash-b hidden md:block" />
+      {head("Base module", "pt-4")}
       {base.map(item)}
       {head("Preview only")}
       {preview.map(item)}
       {head("Reference")}
       {item(reference)}
+      <div className="ml-auto shrink-0 self-center md:hidden"><ThemeToggle /></div>
     </nav>
   );
 }

@@ -33,9 +33,9 @@ export default function Export() {
         <Card title="Filter by site" className="lg:col-span-2">
           <div className="flex flex-wrap items-center gap-2" role="radiogroup" aria-label="Site filter">
             {sites.map((s) => (
-              <button key={s} role="radio" aria-checked={site === s} onClick={() => setSite(s)} className={`press rounded-full px-4 py-2 text-sm font-medium transition-colors ${site === s ? "bg-slate-900 text-white shadow" : "bg-white text-slate-700 ring-1 ring-slate-200 hover:bg-slate-100"}`}>{s}</button>
+              <button key={s} role="radio" aria-checked={site === s} onClick={() => setSite(s)} className={`press rounded-full px-4 py-2 text-sm font-medium transition-colors ${site === s ? "bg-stone-900 text-page" : "bg-surface text-stone-700 ring-1 ring-stone-200 hover:bg-stone-100"}`}>{s}</button>
             ))}
-            <span className="ml-auto text-sm text-slate-600"><strong className="tnum text-slate-900">{rows.length}</strong> rows</span>
+            <span className="ml-auto text-sm text-stone-600"><strong className="tnum text-stone-900">{rows.length}</strong> rows</span>
           </div>
         </Card>
         <Card title="Removed before export">
@@ -46,24 +46,24 @@ export default function Export() {
       </div>
 
       <Card title="Preview">
-        <div className="max-h-96 overflow-auto rounded-xl border border-slate-200">
+        <div className="max-h-96 overflow-auto rounded-xl border border-line">
           <table className="w-full text-left text-xs">
-            <thead className="sticky top-0 bg-slate-100 text-slate-600"><tr>{cols.map((c) => <th key={c} className="whitespace-nowrap px-3 py-2.5 font-mono font-medium">{c}</th>)}</tr></thead>
+            <thead className="sticky top-0 bg-stone-100 text-stone-600"><tr>{cols.map((c) => <th key={c} className="whitespace-nowrap px-3 py-2.5 font-mono font-medium">{c}</th>)}</tr></thead>
             <tbody>
               {rows.slice(0, 12).map((r, i) => (
-                <tr key={`${site}-${i}`} className="rise border-t border-slate-100 odd:bg-white even:bg-slate-50/60 hover:bg-teal-50" style={{ "--i": Math.min(i, 8) } as React.CSSProperties}>
+                <tr key={`${site}-${i}`} className="rise border-t border-stone-100 odd:bg-surface even:bg-stone-50/60 hover:bg-brand-50" style={{ "--i": Math.min(i, 8) } as React.CSSProperties}>
                   {cols.map((c) => <td key={c} className="tnum whitespace-nowrap px-3 py-2">{r[c]}</td>)}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="mt-2 text-xs text-slate-500">Showing {Math.min(12, rows.length)} of {rows.length} rows.</p>
+        <p className="mt-2 text-xs text-stone-500">Showing {Math.min(12, rows.length)} of {rows.length} rows.</p>
         <div className="mt-4 flex gap-2">
           <button className={btn} onClick={download}>↓ Download CSV</button>
           <button className={btnGhost} disabled title="Preview">Download XLSX</button>
         </div>
-        <p className="mt-3 text-xs text-slate-500">Identity is replaced by a subject code. Ages become bands. Dates become days from the first visit.</p>
+        <p className="mt-3 text-xs text-stone-500">Identity is replaced by a subject code. Ages become bands. Dates become days from the first visit.</p>
       </Card>
     </>
   );

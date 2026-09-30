@@ -34,27 +34,27 @@ export function TestGuide() {
     <>
       <button
         onClick={() => ref.current?.showModal()}
-        className="ml-3 rounded bg-teal-600 px-2 py-0.5 font-medium text-white hover:bg-teal-500"
+        className="ml-3 rounded bg-accent px-2 py-0.5 text-on-accent hover:opacity-90"
       >
         What to test
       </button>
       <dialog
         ref={ref}
         onClick={(e) => e.target === ref.current && close()}
-        className="m-auto w-[min(32rem,calc(100%-2rem))] rounded-xl p-0 text-left text-slate-900 shadow-xl backdrop:bg-slate-900/50"
+        className="m-auto w-[min(32rem,calc(100%-2rem))] rounded-xl p-0 text-left text-stone-900 shadow-xl backdrop:bg-stone-900/50"
       >
-        <div className="flex items-center justify-between border-b border-slate-200 px-5 py-3">
+        <div className="flex items-center justify-between border-b border-line px-5 py-3">
           <h2 className="text-lg font-semibold">What to test</h2>
-          <button onClick={close} aria-label="Close" className="rounded px-2 text-xl text-slate-500 hover:bg-slate-100">×</button>
+          <button onClick={close} aria-label="Close" className="rounded px-2 text-xl text-stone-500 hover:bg-stone-100">×</button>
         </div>
         <div className="max-h-[70vh] overflow-y-auto px-5 py-4">
           {groups.map((g) => (
             <section key={g.title} className="mb-4 last:mb-0">
-              <h3 className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">{g.title}</h3>
+              <h3 className="mb-2 text-xs font-semibold text-stone-500">{g.title}</h3>
               <ul className="space-y-1">
                 {g.items.map((i) => (
                   <li key={i.text}>
-                    <Link href={i.href} onClick={close} className="block rounded-lg px-3 py-2 text-sm text-teal-800 hover:bg-teal-50">
+                    <Link href={i.href} onClick={close} className="block rounded-lg px-3 py-2 text-sm text-brand-800 hover:bg-brand-50">
                       {i.text}
                     </Link>
                   </li>
@@ -62,7 +62,7 @@ export function TestGuide() {
               </ul>
             </section>
           ))}
-          <p className="mt-4 text-xs text-slate-500">All data is invented. Added visits vanish on refresh.</p>
+          <p className="mt-4 text-xs text-stone-500">All data is invented. Added visits vanish on refresh.</p>
         </div>
       </dialog>
     </>

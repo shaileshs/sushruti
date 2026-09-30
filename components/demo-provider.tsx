@@ -28,7 +28,7 @@ export function DemoProvider({ children }: { children: ReactNode }) {
     <DemoCtx.Provider value={{ patients, addVisit, notify }}>
       {children}
       {toast && (
-        <div key={toast.id} role="status" className="toast fixed bottom-24 left-1/2 z-50 flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2.5 text-sm text-white shadow-2xl lg:bottom-8">
+        <div key={toast.id} role="status" className="toast fixed bottom-24 left-1/2 z-50 flex items-center gap-2 rounded-full bg-stone-900 px-4 py-2.5 text-sm text-white shadow-2xl lg:bottom-8">
           <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-xs">✓</span>
           {toast.text}
         </div>
