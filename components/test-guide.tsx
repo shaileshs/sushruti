@@ -34,8 +34,9 @@ export function TestGuide() {
     <>
       <button
         onClick={() => ref.current?.showModal()}
-        className="ml-3 rounded bg-accent px-2 py-0.5 text-on-accent hover:opacity-90"
+        className="press flex items-center gap-2.5 whitespace-nowrap rounded-[7px] px-2 py-[5px] text-[13.5px] text-stone-500 transition-colors hover:bg-stone-50 hover:text-stone-900"
       >
+        <svg viewBox="0 0 20 20" className="h-4 w-4 shrink-0" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden><path d="M5 10.5l3.5 3.5L15 6.5M3 3h14v14H3z" /></svg>
         What to test
       </button>
       <dialog

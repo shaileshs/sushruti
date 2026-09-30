@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { TestGuide } from "@/components/test-guide";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const ic = (d: string): ReactNode => (
@@ -49,6 +50,7 @@ export function Nav() {
       </div>
       <div className="dash-b hidden md:block" />
       <div className="hidden pt-2 md:block" />
+      <TestGuide />
       {[...base, ...preview, reference].map(item)}
       <div className="ml-auto shrink-0 self-center md:hidden"><ThemeToggle /></div>
     </nav>

@@ -3,7 +3,6 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { DemoProvider } from "@/components/demo-provider";
 import { Nav } from "@/components/nav";
-import { TestGuide } from "@/components/test-guide";
 
 const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
 const mono = JetBrains_Mono({ variable: "--font-mono-jb", subsets: ["latin"] });
@@ -26,7 +25,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="frame dash-x mx-auto flex min-h-screen max-w-[1400px] flex-col">
           <div className="dash-b flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-stone-50 px-4 py-2 text-center font-mono text-[11px] text-stone-500">
             <span>Demo with sample data. All patients, photos, and numbers are invented. Nothing is saved.</span>
-            <TestGuide />
           </div>
           <DemoProvider>
             <div className="flex flex-1 flex-col md:flex-row">
