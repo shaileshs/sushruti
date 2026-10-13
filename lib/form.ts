@@ -36,6 +36,7 @@ export const sections: Section[] = [
       long("newsym", "New symptoms, adverse events, safety concerns"),
       en("response", "Patient-reported response", ["Improved", "Unchanged", "Mixed", "Worsened", "Unclear"]),
       long("assess", "Clinician assessment, with basis"),
+      en("outcome", "Outcome category", ["Cure", "Remission", "Pain management", "Quality of life", "Life expectancy"], { hint: "Sample categories from your message. To be confirmed with you.", opt: true }),
       long("since_onc", "Oncology treatment or tests since last visit", { opt: true }),
     ],
   },

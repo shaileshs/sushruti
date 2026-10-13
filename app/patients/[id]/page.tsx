@@ -61,6 +61,7 @@ function VisitItem({ v, latest }: { v: Visit; latest: boolean }) {
           {v.status === "draft" && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs text-amber-800">Draft</span>}
           {v.decision && <span className="rounded-full bg-brand-100 px-2 py-0.5 text-xs text-brand-800">{v.decision}</span>}
           {v.response && <span className={`rounded-full px-2 py-0.5 text-xs ${responseTone[v.response] ?? "bg-stone-100"}`}>{v.response}</span>}
+          {v.outcome && <span className="rounded-full bg-gold-100 px-2 py-0.5 text-xs text-gold-900">{v.outcome}</span>}
         </div>
         <p className="mt-1 text-sm">
           {v.rx ? <><strong>{v.rx.remedy} {v.rx.potency}</strong> · {v.rx.dose}, {v.rx.repetition.toLowerCase()}</> : <span className="text-stone-500">No prescription recorded</span>}

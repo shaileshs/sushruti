@@ -15,6 +15,7 @@ export type Visit = {
   qol: number; // 0-100, placeholder scale
   rx?: { remedy: string; potency: string; dose: string; repetition: string };
   otherRx?: { medicine: string; role: string; potency: string; dose: string }[]; // detox and supportive medicines
+  outcome?: string; // sample categories, to be confirmed with the doctor
   charge?: number; // rupees, for accounts
   decision?: string;
   response?: string;
@@ -143,6 +144,11 @@ const extras: Record<string, Visit["otherRx"]> = {
 patients.flatMap((p) => p.visits).forEach((vis, i) => {
   vis.charge = vis.type === "First visit" ? 1500 : [500, 600, 500][i % 3];
   if (extras[vis.id]) vis.otherRx = extras[vis.id];
+});
+
+const outcomes: Record<string, string> = { p1: "Remission", p2: "Life expectancy", p3: "Pain management", p4: "Quality of life", p5: "Pain management", p7: "Remission", p8: "Quality of life" };
+patients.forEach((p) => {
+  if (p.visits.length > 1 && outcomes[p.id]) p.visits[p.visits.length - 1].outcome = outcomes[p.id];
 });
 
 export const lastVisit = (p: Patient) => p.visits[p.visits.length - 1];

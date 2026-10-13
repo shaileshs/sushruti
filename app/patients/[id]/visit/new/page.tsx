@@ -38,7 +38,7 @@ function VisitForm({ p }: { p: Patient }) {
   const [st, setStates] = useState<States>(saved?.st ?? {});
   const [photos, setPhotos] = useState<{ view: string; consent: boolean }[]>(saved?.photos ?? []);
   const [restored, setRestored] = useState(!!saved);
-  const [panel, setPanel] = useState<{ kind: "report" | "match" } | { kind: "library"; slug?: string } | null>(null);
+  const [panel, setPanel] = useState<{ kind: "report" | "match" | "history" } | { kind: "library"; slug?: string } | null>(null);
   const [autoAt, setAutoAt] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
   const setV = (k: string, val: Val) => { setTouched(true); setValues((x) => ({ ...x, [k]: val })); };
@@ -131,6 +131,7 @@ function VisitForm({ p }: { p: Patient }) {
         .filter((r) => r.medicine)
         .map((r) => ({ medicine: r.medicine, role: r.role_detox_or_supportive_ ?? "", potency: r.potency ?? "", dose: r.dose_and_repetition ?? "" })),
       charge: v.charge ? Number(v.charge) : undefined,
+      outcome: text(v.outcome) || undefined,
       decision: text(v.decision) || undefined,
       response: text(v.response) || undefined,
       detail,
@@ -191,6 +192,7 @@ function VisitForm({ p }: { p: Patient }) {
           {prev.response && <span className="ml-1 rounded-full bg-gold-100 px-2 py-0.5 text-xs text-gold-900">{prev.response}</span>}
         </p>
         <p className="mt-1 text-xs text-brand-800">{prev.sizeMm} mm · pain {prev.pain}/10 · QoL {prev.qol}</p>
+        <button type="button" className="press mt-2 text-sm font-medium text-brand-700 hover:underline" onClick={() => setPanel({ kind: "history" })}>View full history and all earlier prescriptions →</button>
       </div>
 
       <CaseForm v={v} st={st} setV={setV} setSt={setSt} errors={errors} showSince prev={prevNums} baseline={{ site: prev.site, stage: prev.grade }} sectionTop={{
@@ -204,6 +206,11 @@ function VisitForm({ p }: { p: Patient }) {
         ),
       }} extra={{ id: "photos", n: "P", title: "Photos", node: photoNode }} />
 
+      {panel?.kind === "history" && (
+        <SidePanel title={`${p.name} — full history`} onClose={() => setPanel(null)}>
+          <History p={p} />
+        </SidePanel>
+      )}
       {panel?.kind === "match" && (
         <SidePanel title="Suggest remedies" onClose={() => setPanel(null)}>
           <p className="mb-4 text-sm text-stone-600">Based on {p.name}’s last visit. Tick the remedies you want to keep, compare them in the library, then choose one.</p>
@@ -285,6 +292,43 @@ function Decision({ names, why, onWhy, onUse }: { names: string[]; why: string; 
           <button type="button" className={`${btn} mt-3`} onClick={() => onUse(chosen)}>Use {chosen} in the treatment plan</button>
         </>
       )}
+    </div>
+  );
+}
+
+function History({ p }: { p: Patient }) {
+  const first = p.visits[0];
+  const rxVisits = p.visits.filter((x) => x.rx);
+  return (
+    <div className="space-y-5 text-sm">
+      <section>
+        <h3 className="text-[13px] font-semibold text-stone-900">First visit · {fmtDate(first.date)}</h3>
+        <dl className="mt-2 space-y-2">
+          {[["Site", first.site], ["Complaint", first.complaint], ["Findings", first.findings], ["Size · pain · grade · QoL", `${first.sizeMm} mm · ${first.pain}/10 · ${first.grade} · ${first.qol}`]].map(([k, val]) => (
+            <div key={k}><dt className="text-xs font-semibold text-stone-500">{k}</dt><dd>{val}</dd></div>
+          ))}
+        </dl>
+        {first.detail?.map((d) => (
+          <div key={d.title} className="mt-2 rounded-xl bg-stone-50 p-3">
+            <p className="text-xs font-semibold text-stone-500">{d.title}</p>
+            <ul className="mt-1 space-y-0.5 text-stone-700">{d.items.map((it) => <li key={it}>{it}</li>)}</ul>
+          </div>
+        ))}
+      </section>
+      <section>
+        <h3 className="text-[13px] font-semibold text-stone-900">All prescriptions</h3>
+        {rxVisits.length === 0 ? <p className="mt-2 text-stone-500">None recorded.</p> : (
+          <ol className="mt-2 space-y-2">
+            {rxVisits.map((x) => (
+              <li key={x.id} className="rounded-xl border border-line bg-surface p-3">
+                <p className="text-xs text-stone-500">{fmtDate(x.date)} · {x.type}{x.decision && ` · ${x.decision}`}{x.response && ` · ${x.response}`}</p>
+                <p className="mt-0.5"><strong>{x.rx!.remedy} {x.rx!.potency}</strong> · {x.rx!.dose}, {x.rx!.repetition.toLowerCase()}</p>
+                {x.otherRx && x.otherRx.length > 0 && <p className="text-xs text-stone-600">Also: {x.otherRx.map((o) => `${o.medicine} (${o.role.toLowerCase() || "supportive"})`).join(", ")}</p>}
+              </li>
+            ))}
+          </ol>
+        )}
+      </section>
     </div>
   );
 }
