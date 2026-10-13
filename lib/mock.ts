@@ -267,6 +267,8 @@ export const exportRows = patients
     p.visits.map((vis, i) => ({
       subject: `S-${p.code.slice(2)}`,
       cancer: p.cancer,
+      outcome: vis.outcome ?? "",
+      remedy: vis.rx?.remedy ?? "",
       age_band: `${Math.floor(p.age / 10) * 10}-${Math.floor(p.age / 10) * 10 + 9}`,
       sex: p.sex,
       visit_no: i + 1,
@@ -278,3 +280,13 @@ export const exportRows = patients
       qol: vis.qol,
     })),
   );
+
+// Invented indications that "supported" a remedy, for the remedy outcome table. The doctor will record the real ones.
+export const indicationsFor: Record<string, string> = {
+  "Arsenicum album": "Burning pain, better with warmth; thin acrid discharge",
+  Phosphorus: "Bleeds easily; burning; thirst for cold drinks",
+  "Nitricum acidum": "Splinter-like pain; bleeds on touch",
+  "Thuja occidentalis": "Warty growths; worse in damp weather",
+};
+
+export const outcomeCategories = ["Cure", "Remission", "Pain management", "Quality of life", "Life expectancy"] as const;
