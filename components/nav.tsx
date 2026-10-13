@@ -16,7 +16,7 @@ type Item = { href: string; label: string; icon: ReactNode };
 const base: Item[] = [{ href: "/", label: "Patients", icon: ic("M7 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2 17c0-3 2-5 5-5s5 2 5 5M14 4a2.5 2.5 0 0 1 0 5M15 12c2 .4 3 2 3 5") }];
 const preview: Item[] = [
   { href: "/remedies", label: "Remedy library", icon: ic("M4 3h9a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2V3ZM4 15a2 2 0 0 1 2-2h9") },
-  { href: "/endoscopy", label: "Endoscopy reader", icon: ic("M5 2h7l4 4v12H5V2ZM12 2v4h4M8 10h5M8 13h5") },
+  { href: "/reports", label: "Report reader", icon: ic("M5 2h7l4 4v12H5V2ZM12 2v4h4M8 10h5M8 13h5") },
   { href: "/match", label: "Remedy match", icon: ic("M3 10h4l2-5 3 10 2-5h3") },
   { href: "/analytics", label: "Analytics", icon: ic("M3 17V9M8 17V4M13 17v-6M18 17V7") },
   { href: "/export", label: "Research export", icon: ic("M10 3v10M6 9l4 4 4-4M4 16h12") },

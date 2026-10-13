@@ -19,7 +19,7 @@ const groups: { title: string; items: Item[] }[] = [
     title: "Previews of later modules",
     items: [
       { text: "Remedy library: search “burning”", href: "/remedies" },
-      { text: "Endoscopy reader: read the report, confirm each value", href: "/endoscopy" },
+      { text: "Report reader: pick a report type, read it, confirm each value", href: "/reports" },
       { text: "Remedy match: open a remedy to see its points", href: "/match" },
       { text: "Analytics: prescriptions and outcome curves", href: "/analytics" },
       { text: "Research export: filter, then download a CSV", href: "/export" },
