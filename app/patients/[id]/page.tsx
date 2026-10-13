@@ -18,6 +18,7 @@ const responseTone: Record<string, string> = {
   Unchanged: "bg-stone-100 text-stone-700",
   Unclear: "bg-stone-100 text-stone-700",
 };
+const rupees = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 const dot: Record<string, string> = { Improved: "bg-emerald-500", Mixed: "bg-amber-500", Worsened: "bg-rose-500" };
 
 export default function PatientPage(props: PageProps<"/patients/[id]">) {
@@ -70,7 +71,7 @@ function VisitItem({ v, latest }: { v: Visit; latest: boolean }) {
           <p className="text-xs text-stone-600">Also: {v.otherRx.map((o) => `${o.medicine}${o.potency ? ` ${o.potency}` : ""} (${o.role.toLowerCase() || "supportive"})`).join(", ")}</p>
         )}
         <p className="text-xs text-stone-500">
-          {v.site} · {v.sizeMm} mm · pain {v.pain}/10 · grade {v.grade} · QoL {v.qol}{" "}
+          {v.site} · {v.sizeMm} mm · pain {v.pain}/10 · grade {v.grade} · QoL {v.qol}{v.charge !== undefined && ` · charge ${rupees(v.charge)}`}{" "}
           <span className="font-medium text-brand-700 group-hover:underline">{open ? "Hide details" : "Details"}</span>
         </p>
       </button>
@@ -169,6 +170,15 @@ function PatientView({ p }: { p: Patient }) {
         </Card>
 
         <div className="space-y-4">
+          <Card title="Charges">
+            <p className="text-3xl font-semibold tracking-tight"><span className="tnum">{rupees(p.visits.reduce((a, x) => a + (x.charge ?? 0), 0))}</span></p>
+            <p className="mt-1 text-xs text-stone-500">Total over {p.visits.filter((x) => x.charge !== undefined).length} visits. Sample amounts in this demo.</p>
+            <ul className="mt-3 space-y-1 text-xs text-stone-600">
+              {[...p.visits].reverse().map((x) => (
+                <li key={x.id} className="flex justify-between"><span>{fmtDate(x.date)} · {x.type}</span><span className="tnum">{x.charge !== undefined ? rupees(x.charge) : "—"}</span></li>
+              ))}
+            </ul>
+          </Card>
           <Card title="Change log">
             <ul className="space-y-2 text-xs text-stone-600">
               <li>Dr. (sample) edited a visit — pain 5 → 4</li>
