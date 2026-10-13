@@ -9,10 +9,8 @@ When an id gets answered: move the answer to the module doc that needs it, then 
 | id | Ask | Default if no answer |
 |----|-----|------------------------|
 | Q1 | What is "Scoring" (her outline item 13)? Which QoL tool? | Pain, lesion size, TNM. |
-| Q5 | Record remedy, potency, dose per visit from the start? | Yes. |
 | Q3 | Photos kept per visit? | Per visit. |
 | Q4 | More than one lesion per patient? | One lesion. |
-| Q16 | Oral only, or esophageal too? | Oral first. |
 | Q8 | Patient language, and language she records in? | Store any script. |
 
 ## 2. Not sent yet — safe default, not blocking
@@ -24,11 +22,10 @@ When an id gets answered: move the answer to the module doc that needs it, then 
 
 ## 2a. Needed now — not yet sent (from the 2026-10-10 message)
 
-Ordered by urgency. Each has a default, so none stops the build, but the first two change what we build next.
+Ordered by urgency. Each has a default, so none stops the build.
 
 | id | Ask | Default if no answer |
 |----|-----|------------------------|
-| Q17 | She plans to use the app on new patients. OK to use test data only, on a private network only, until login ships? Or should login come first? | Test data only (`00-roadmap.md` G0, NFR-13). |
 | N18 | Priority order. Her message asks for six report types, several cancers, statistics, and a reasoning aid. Which comes first after the base module? | Base, then remedy library, then endoscopy reports, then the rest. |
 | Q15 | How does she decide a prescription "worked" or "failed"? Are cure, remission, pain management, quality of life, and life expectancy the right categories? How does she define each? | Use her five names as a dropdown. |
 | N15 | Charges: currency, one amount per visit or per medicine, what accounts needs to see. | One amount per visit, in rupees. |
@@ -70,7 +67,7 @@ Still exploring. Ask once we're closer to a real build with real patient data.
 | Question | Answer |
 |----------|--------|
 | Who uses the app | Doctor + one trainee, same rights, no wider use. |
-| Login | Deferred to a later module (D8), not in the first build. |
+| Login | Deferred to a later module (D8), not in the first build. Decision confirmed 2026-10-13: it waits. Until then, test data only (NFR-13); real patient data waits for login (Q17 closed). |
 | Devices | Laptop and phone. |
 | Patient identity fields | Name, age/DOB, sex, phone, address. |
 | Case form (N1) | Received: her outline plus the Word template. Built as a superset, see `04-form-definition.md`. |
@@ -79,3 +76,5 @@ Still exploring. Ask once we're closer to a real build with real patient data.
 | Scales | Decide later. |
 | Photos | Open (see Q3). |
 | Timeline | Not a concern for now. |
+| Remedy, potency, dose per visit (Q5) | Yes. Answered by her 2026-10-10 message: she records remedy, potency, and charge at every visit. Removed from `02-client-questions.md`. Built in M1 (`04-form-definition.md` §9). |
+| Oral only, or esophageal too (Q16) | Oral first. Answered by her 2026-10-10 message: "starting with oral cancer but soon other cancers will follow." Removed from `02-client-questions.md`. Which cancer comes next and when is now N16. |

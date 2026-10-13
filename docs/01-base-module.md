@@ -50,7 +50,7 @@ Until then: **the app must not run on a public URL, and must not hold real patie
 ### 4.4 Visits
 
 - FR-13 A user can add a visit to a patient. A visit has a date, a type (first visit or follow-up), and the case fields in FR-14.
-- FR-14 Case fields: the full list is in `04-form-definition.md`. It follows the doctor's 15-heading outline, plus optional template items. Fields we chart or filter are typed columns; the rest are structured JSON with a form version. Optional sections are collapsed by default. Oral cancer only; esophageal needs its own form (client Q5).
+- FR-14 Case fields: the full list is in `04-form-definition.md`. It follows the doctor's 15-heading outline, plus optional template items. Fields we chart or filter are typed columns; the rest are structured JSON with a form version. Optional sections are collapsed by default. Oral cancer only; esophageal and breast need their own forms (N16).
 - FR-14a Each visit can hold prescription events (remedy, potency, dose, repetition) and a decision (start, continue, repeat, change, withhold, investigate, refer). A follow-up visit shows the last prescription and response at the top.
 - FR-14c Each visit records the charge taken: amount and an optional note. The accounts department can view or export charges by date. Currency and detail level are open (`question-tracker.md` N15).
 - FR-14d A prescription has a role: main, detox, or supportive. A visit has one main remedy and may have other medicines. The doctor writes the reason for each decision (`04-form-definition.md` §9).
