@@ -113,7 +113,7 @@ function PatientView({ p }: { p: Patient }) {
       <div className="rise relative mb-6 overflow-hidden rounded-2xl border border-line bg-surface p-5 md:p-6">        <div className="relative flex flex-wrap items-center gap-4">
           <Avatar name={p.name} size={64} />
           <div className="min-w-0 flex-1">
-            <p className="font-mono text-xs text-stone-500">{p.code}</p>
+            <p className="font-mono text-xs text-stone-500">{p.code} · <span className="rounded-full bg-stone-100 px-2 py-0.5 font-sans text-stone-700">{p.cancer} cancer</span></p>
             <h1 className="text-2xl font-semibold tracking-tight md:text-3xl">{p.name}</h1>
             <p className="mt-0.5 text-sm text-stone-600">{p.age} years · {p.sex === "F" ? "Female" : "Male"} · {p.phone} · {p.address}</p>
             <div className="mt-2 flex flex-wrap gap-1.5">

@@ -91,7 +91,7 @@ export default function PatientList() {
                     {s === "improving" && <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">Improving</span>}
                     {s === "attention" && <span className="rounded-full bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">Needs attention</span>}
                   </div>
-                  <p className="truncate text-sm text-stone-500">{p.age} / {p.sex} · {l.site}</p>
+                  <p className="truncate text-sm text-stone-500">{p.age} / {p.sex} · {p.cancer} · {l.site}</p>
                 </div>
                 <div className="hidden text-right sm:block">
                   <p className="tnum text-sm font-medium text-stone-800">{l.sizeMm} mm</p>

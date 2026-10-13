@@ -176,6 +176,13 @@ function VisitForm({ p }: { p: Patient }) {
         </div>
       </div>
 
+      {p.cancer !== "Oral" && (
+        <div className="rise mb-4 rounded-xl border border-dashed border-line-strong bg-stone-50 px-4 py-2.5 text-sm text-stone-600">
+          <span className="mr-2 rounded-full bg-gold-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wider text-gold-800">Preview</span>
+          This preview uses the oral cancer form. {p.cancer} cancer gets its own form later.
+        </div>
+      )}
+
       {restored && (
         <div className="rise mb-4 flex flex-wrap items-center justify-between gap-2 rounded-xl border border-amber-300 bg-amber-50 px-4 py-2.5 text-sm text-amber-900">
           <span>We restored your unsaved draft for this visit.</span>

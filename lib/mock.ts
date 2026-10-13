@@ -22,8 +22,11 @@ export type Visit = {
   detail?: { title: string; items: string[] }[]; // filled fields from the case form
 };
 
+export type CancerType = "Oral" | "Esophageal" | "Breast";
+
 export type Patient = {
   id: string;
+  cancer: CancerType;
   code: string;
   name: string;
   age: number;
@@ -52,7 +55,7 @@ const v = (
 
 export const patients: Patient[] = [
   {
-    id: "p1", code: "P-0001", name: "Meera Iyer", age: 58, sex: "F", phone: "98•••• 1042",
+    id: "p1", cancer: "Oral", code: "P-0001", name: "Meera Iyer", age: 58, sex: "F", phone: "98•••• 1042",
     address: "Sample address, Pune", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p1v1", "2026-05-06", "First visit", "Left buccal mucosa", 32, 7, "II", 48, "Non-healing ulcer for 3 months; burning on spicy food.", "Ulcero-proliferative lesion, firm edges, no trismus."),
@@ -62,7 +65,7 @@ export const patients: Patient[] = [
     ],
   },
   {
-    id: "p2", code: "P-0002", name: "Ramesh Kulkarni", age: 64, sex: "M", phone: "97•••• 7781",
+    id: "p2", cancer: "Esophageal", code: "P-0002", name: "Ramesh Kulkarni", age: 64, sex: "M", phone: "97•••• 7781",
     address: "Sample address, Nashik", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p2v1", "2026-04-22", "First visit", "Lower third esophagus", 45, 5, "III", 40, "Difficulty swallowing solids; weight loss.", "Endoscopy: circumferential growth, 45 mm."),
@@ -71,7 +74,7 @@ export const patients: Patient[] = [
     ],
   },
   {
-    id: "p3", code: "P-0003", name: "Anita Deshmukh", age: 47, sex: "F", phone: "99•••• 3320",
+    id: "p3", cancer: "Oral", code: "P-0003", name: "Anita Deshmukh", age: 47, sex: "F", phone: "99•••• 3320",
     address: "Sample address, Mumbai", consentStorage: true, consentPhoto: true, consentResearch: false,
     visits: [
       v("p3v1", "2026-06-10", "First visit", "Right lateral border of tongue", 20, 6, "I", 60, "Painful patch on tongue for 2 months.", "Erythro-leukoplakic patch with small ulcer."),
@@ -80,7 +83,7 @@ export const patients: Patient[] = [
     ],
   },
   {
-    id: "p4", code: "P-0004", name: "Suresh Patel", age: 71, sex: "M", phone: "98•••• 5567",
+    id: "p4", cancer: "Esophageal", code: "P-0004", name: "Suresh Patel", age: 71, sex: "M", phone: "98•••• 5567",
     address: "Sample address, Surat", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p4v1", "2026-05-14", "First visit", "Mid esophagus", 38, 4, "II", 52, "Food sticks at mid chest.", "Ulcerated stricture, 38 mm."),
@@ -88,7 +91,7 @@ export const patients: Patient[] = [
     ],
   },
   {
-    id: "p5", code: "P-0005", name: "Farida Sheikh", age: 52, sex: "F", phone: "90•••• 2214",
+    id: "p5", cancer: "Oral", code: "P-0005", name: "Farida Sheikh", age: 52, sex: "F", phone: "90•••• 2214",
     address: "Sample address, Hyderabad", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p5v1", "2026-07-02", "First visit", "Right gingivo-buccal sulcus", 26, 8, "II", 42, "Severe pain, cannot open mouth fully.", "Proliferative growth, mild trismus."),
@@ -96,14 +99,14 @@ export const patients: Patient[] = [
     ],
   },
   {
-    id: "p6", code: "P-0006", name: "Vikram Rao", age: 39, sex: "M", phone: "93•••• 8890",
+    id: "p6", cancer: "Oral", code: "P-0006", name: "Vikram Rao", age: 39, sex: "M", phone: "93•••• 8890",
     address: "Sample address, Bengaluru", consentStorage: true, consentPhoto: true, consentResearch: false,
     visits: [
       v("p6v1", "2026-09-09", "First visit", "Left lateral border of tongue", 14, 3, "I", 72, "Rough spot on tongue, tobacco chewer.", "Small indurated ulcer."),
     ],
   },
   {
-    id: "p7", code: "P-0007", name: "Lakshmi Nair", age: 66, sex: "F", phone: "94•••• 6103",
+    id: "p7", cancer: "Oral", code: "P-0007", name: "Lakshmi Nair", age: 66, sex: "F", phone: "94•••• 6103",
     address: "Sample address, Kochi", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p7v1", "2026-06-17", "First visit", "Right buccal mucosa", 30, 6, "II", 50, "Ulcer with bleeding on brushing.", "Ulcero-proliferative, 30 mm."),
@@ -112,11 +115,28 @@ export const patients: Patient[] = [
     ],
   },
   {
-    id: "p8", code: "P-0008", name: "Arjun Menon", age: 55, sex: "M", phone: "96•••• 4471",
+    id: "p8", cancer: "Esophageal", code: "P-0008", name: "Arjun Menon", age: 55, sex: "M", phone: "96•••• 4471",
     address: "Sample address, Chennai", consentStorage: true, consentPhoto: true, consentResearch: true,
     visits: [
       v("p8v1", "2026-08-03", "First visit", "Upper third esophagus", 33, 5, "II", 55, "Painful swallowing, hoarse voice.", "Polypoid growth, 33 mm."),
       v("p8v2", "2026-09-07", "Follow-up", "Upper third esophagus", 30, 4, "II", 60, "Voice clearer.", "Slight reduction."),
+    ],
+  },
+  {
+    id: "p9", cancer: "Breast", code: "P-0009", name: "Neha Joshi", age: 49, sex: "F", phone: "98•••• 2750",
+    address: "Sample address, Nagpur", consentStorage: true, consentPhoto: true, consentResearch: true,
+    visits: [
+      v("p9v1", "2026-06-04", "First visit", "Left breast, upper outer quadrant", 34, 4, "II", 58, "Lump in the left breast for 4 months.", "Firm, irregular lump, 34 mm. Axillary node palpable."),
+      v("p9v2", "2026-07-09", "Follow-up", "Left breast, upper outer quadrant", 30, 3, "II", 64, "Less heaviness in the breast.", "Lump softer, 30 mm."),
+      v("p9v3", "2026-08-13", "Follow-up", "Left breast, upper outer quadrant", 26, 2, "II", 70, "Sleeping better.", "Reduced to 26 mm."),
+    ],
+  },
+  {
+    id: "p10", cancer: "Breast", code: "P-0010", name: "Kavita Reddy", age: 61, sex: "F", phone: "91•••• 9034",
+    address: "Sample address, Vijayawada", consentStorage: true, consentPhoto: false, consentResearch: true,
+    visits: [
+      v("p10v1", "2026-07-16", "First visit", "Right breast, central", 41, 6, "III", 46, "Painful swelling near the nipple.", "Ulcerated area, 41 mm."),
+      v("p10v2", "2026-08-20", "Follow-up", "Right breast, central", 40, 5, "III", 50, "Pain a little less.", "No clear change in size."),
     ],
   },
 ];
@@ -134,6 +154,11 @@ rx("p3v1", "Phosphorus", "30C", "Start");
 rx("p3v2", "Phosphorus", "30C", "Continue", "Improved");
 rx("p7v1", "Nitricum acidum", "30C", "Start");
 rx("p7v2", "Nitricum acidum", "30C", "Repeat", "Mixed");
+rx("p9v1", "Phosphorus", "200C", "Start");
+rx("p9v2", "Phosphorus", "200C", "Continue", "Improved");
+rx("p9v3", "Phosphorus", "200C", "Continue", "Improved");
+rx("p10v1", "Thuja occidentalis", "30C", "Start");
+rx("p10v2", "Thuja occidentalis", "30C", "Continue", "Unchanged");
 
 // Invented supportive medicines and charges, so the timeline and the accounts total have something to show.
 const extras: Record<string, Visit["otherRx"]> = {
@@ -146,7 +171,7 @@ patients.flatMap((p) => p.visits).forEach((vis, i) => {
   if (extras[vis.id]) vis.otherRx = extras[vis.id];
 });
 
-const outcomes: Record<string, string> = { p1: "Remission", p2: "Life expectancy", p3: "Pain management", p4: "Quality of life", p5: "Pain management", p7: "Remission", p8: "Quality of life" };
+const outcomes: Record<string, string> = { p9: "Remission", p10: "Pain management", p1: "Remission", p2: "Life expectancy", p3: "Pain management", p4: "Quality of life", p5: "Pain management", p7: "Remission", p8: "Quality of life" };
 patients.forEach((p) => {
   if (p.visits.length > 1 && outcomes[p.id]) p.visits[p.visits.length - 1].outcome = outcomes[p.id];
 });
@@ -241,6 +266,7 @@ export const exportRows = patients
   .flatMap((p) =>
     p.visits.map((vis, i) => ({
       subject: `S-${p.code.slice(2)}`,
+      cancer: p.cancer,
       age_band: `${Math.floor(p.age / 10) * 10}-${Math.floor(p.age / 10) * 10 + 9}`,
       sex: p.sex,
       visit_no: i + 1,
