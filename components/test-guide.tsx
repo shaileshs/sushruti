@@ -6,23 +6,38 @@ import { useRef } from "react";
 type Item = { text: string; href: string };
 const groups: { title: string; items: Item[] }[] = [
   {
-    title: "Base module",
+    title: "New patient: follow your clinic flow",
     items: [
-      { text: "Find a patient by name, phone, or code (try “P-0003”)", href: "/" },
-      { text: "Open a patient: trends, photos over time, visits, consent", href: "/patients/p1" },
-      { text: "Add a visit. Enter pain 11 to see the check. Then save.", href: "/patients/p1/visit/new" },
-      { text: "Save a visit as a draft", href: "/patients/p2/visit/new" },
-      { text: "Open the app on a phone", href: "/" },
+      { text: "1. Start a visit. Pain 11 shows a check.", href: "/patients/p6/visit/new" },
+      { text: "2. In Histopathology or Investigations, press “Read a report”. Pick MRI, confirm each value, save.", href: "/patients/p6/visit/new" },
+      { text: "3. In Evaluation, press “Suggest remedies”. Tick two or three, compare one in the library.", href: "/patients/p6/visit/new" },
+      { text: "4. Write why you chose it, then use it in the treatment plan.", href: "/patients/p6/visit/new" },
+      { text: "5. In Treatment plan, add a supportive medicine and the charge taken. Save.", href: "/patients/p6/visit/new" },
     ],
   },
   {
-    title: "Previews of later modules",
+    title: "Follow-up",
     items: [
+      { text: "Open a patient: trends, photos, timeline, charges", href: "/patients/p1" },
+      { text: "Add a visit, then press “View full history and all earlier prescriptions”", href: "/patients/p3/visit/new" },
+      { text: "Save a visit as a draft", href: "/patients/p2/visit/new" },
+    ],
+  },
+  {
+    title: "Research",
+    items: [
+      { text: "Analytics: filter by cancer type, read the remedy table", href: "/analytics" },
+      { text: "Research export: filter, download the CSV and the data dictionary", href: "/export" },
+    ],
+  },
+  {
+    title: "Other screens",
+    items: [
+      { text: "Find a patient by name, phone, or code (try “P-0003”)", href: "/" },
       { text: "Remedy library: search “burning”", href: "/remedies" },
-      { text: "Report reader: pick a report type, read it, confirm each value", href: "/reports" },
-      { text: "Remedy match: open a remedy to see its points", href: "/match" },
-      { text: "Analytics: prescriptions and outcome curves", href: "/analytics" },
-      { text: "Research export: filter, then download a CSV", href: "/export" },
+      { text: "Report reader on its own", href: "/reports" },
+      { text: "Remedy match: tick a shortlist, start a visit", href: "/match" },
+      { text: "Open the app on a phone", href: "/" },
     ],
   },
 ];
