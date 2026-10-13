@@ -12,6 +12,10 @@ When an id gets answered: move the answer to the module doc that needs it, then 
 | Q3 | Photos kept per visit? | Per visit. |
 | Q4 | More than one lesion per patient? | One lesion. |
 | Q8 | Patient language, and language she records in? | Store any script. |
+| N18 | Priority order. Her message asks for six report types, several cancers, statistics, and a reasoning aid. Which comes first after the base module? | Base, then remedy library, then endoscopy reports, then the rest. |
+| Q15 | How does she decide a prescription "worked" or "failed"? Are cure, remission, pain management, quality of life, and life expectancy the right categories? How does she define each? | Use her five names as a dropdown. |
+| N15 | Charges: currency, one amount per visit or per medicine, what accounts needs to see. | One amount per visit, in rupees. |
+| N16 | Which cancers after oral, and in what order? Does breast come within this build? | Oral only. |
 
 ## 2. Not sent yet — safe default, not blocking
 
@@ -20,16 +24,12 @@ When an id gets answered: move the answer to the module doc that needs it, then 
 | N2 | Login emails for doctor and trainee. | Not needed — no login in the first build (`00-roadmap.md` D8). |
 | Q2 | Quality-of-life scale? | Folded into Q1. |
 
-## 2a. Needed now — not yet sent (from the 2026-10-10 message)
+## 2a. Needed soon — not yet sent (from the 2026-10-10 message)
 
-Ordered by urgency. Each has a default, so none stops the build.
+Each has a default, so none stops the build. Ask when we near the related module.
 
 | id | Ask | Default if no answer |
 |----|-----|------------------------|
-| N18 | Priority order. Her message asks for six report types, several cancers, statistics, and a reasoning aid. Which comes first after the base module? | Base, then remedy library, then endoscopy reports, then the rest. |
-| Q15 | How does she decide a prescription "worked" or "failed"? Are cure, remission, pain management, quality of life, and life expectancy the right categories? How does she define each? | Use her five names as a dropdown. |
-| N15 | Charges: currency, one amount per visit or per medicine, what accounts needs to see. | One amount per visit, in rupees. |
-| N16 | Which cancers after oral, and in what order? Does breast come within this build? | Oral only. |
 | N14 | Which statistics software (SPSS, R, Excel, other)? Tests inside the app, or clean export only? | CSV export. |
 | N17 | Which report types first? Sample biopsy, MRI, PET, CT, and sonography reports, patient details removed. | Endoscopy first. |
 
