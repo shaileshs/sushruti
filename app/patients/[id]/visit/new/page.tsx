@@ -5,13 +5,15 @@ import { notFound, useRouter } from "next/navigation";
 import { use, useEffect, useState, useSyncExternalStore } from "react";
 import { CaseForm, type PrevNums, type States, type Values } from "@/components/case-form";
 import { useDemo } from "@/components/demo-provider";
+import { MatchList } from "@/components/match-list";
+import { RemedyBrowser } from "@/components/remedy-browser";
 import { ReportReader } from "@/components/report-reader";
 import { SidePanel } from "@/components/side-panel";
 import { LesionImage } from "@/components/lesion-image";
 import { Avatar } from "@/components/viz";
 import { btn, btnGhost, input } from "@/components/ui";
 import { PHOTO_VIEWS, sections, type Row, type Val } from "@/lib/form";
-import { fmtDate, lastVisit, type Patient } from "@/lib/mock";
+import { fmtDate, lastVisit, remedies, type MatchRow, type Patient } from "@/lib/mock";
 import type { ReportKind } from "@/lib/reports";
 
 export default function NewVisit(props: PageProps<"/patients/[id]/visit/new">) {
@@ -36,7 +38,7 @@ function VisitForm({ p }: { p: Patient }) {
   const [st, setStates] = useState<States>(saved?.st ?? {});
   const [photos, setPhotos] = useState<{ view: string; consent: boolean }[]>(saved?.photos ?? []);
   const [restored, setRestored] = useState(!!saved);
-  const [panel, setPanel] = useState<"report" | null>(null);
+  const [panel, setPanel] = useState<{ kind: "report" | "match" } | { kind: "library"; slug?: string } | null>(null);
   const [autoAt, setAutoAt] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
   const setV = (k: string, val: Val) => { setTouched(true); setValues((x) => ({ ...x, [k]: val })); };
@@ -72,6 +74,13 @@ function VisitForm({ p }: { p: Patient }) {
     setPanel(null);
     notify(`${kind.label} values added to the visit`);
   };
+  // The shortlist lives in "Remedy candidates", so it is saved with the draft and the visit.
+  const cand = (Array.isArray(v.cand) ? (v.cand as Row[]) : []).filter((r) => r.remedy);
+  const candNames = cand.map((r) => r.remedy);
+  const toggleCand = (name: string, score?: string) =>
+    setV("cand", candNames.includes(name) ? cand.filter((r) => r.remedy !== name) : [...cand, { remedy: name, differentiating_features: score ?? "" }]);
+  const toggleMatch = (m: MatchRow) => toggleCand(m.remedy, `Match score ${m.total}/${m.max}`);
+  const openLibrary = (name: string) => setPanel({ kind: "library", slug: remedies.find((r) => r.name === name)?.slug });
   const prevNums: PrevNums = {
     size: { val: prev.sizeMm, goodDown: true },
     pain: { val: prev.pain, goodDown: true },
@@ -180,11 +189,44 @@ function VisitForm({ p }: { p: Patient }) {
       </div>
 
       <CaseForm v={v} st={st} setV={setV} setSt={setSt} errors={errors} showSince prev={prevNums} baseline={{ site: prev.site, stage: prev.grade }} sectionTop={{
-        s2: <button type="button" className={btnGhost} onClick={() => setPanel("report")}>Read a biopsy report</button>,
-        s3: <button type="button" className={btnGhost} onClick={() => setPanel("report")}>Read a report (MRI, CT, PET, sonography, endoscopy)</button>,
+        s2: <button type="button" className={btnGhost} onClick={() => setPanel({ kind: "report" })}>Read a biopsy report</button>,
+        s3: <button type="button" className={btnGhost} onClick={() => setPanel({ kind: "report" })}>Read a report (MRI, CT, PET, sonography, endoscopy)</button>,
+        s14: (
+          <>
+            <button type="button" className={btnGhost} onClick={() => setPanel({ kind: "match" })}>✦ Suggest remedies{candNames.length > 0 && ` (${candNames.length} shortlisted)`}</button>
+            <button type="button" className={btnGhost} onClick={() => setPanel({ kind: "library" })}>Open remedy library</button>
+          </>
+        ),
       }} extra={{ id: "photos", n: "P", title: "Photos", node: photoNode }} />
 
-      {panel === "report" && (
+      {panel?.kind === "match" && (
+        <SidePanel title="Suggest remedies" onClose={() => setPanel(null)}>
+          <p className="mb-4 text-sm text-stone-600">Based on {p.name}’s last visit. Tick the remedies you want to keep, compare them in the library, then choose one.</p>
+          <MatchList selected={candNames} onToggle={toggleMatch} onCompare={openLibrary} />
+          <Decision
+            names={candNames}
+            why={text(v.rationale)}
+            onWhy={(x) => setV("rationale", x)}
+            onUse={(name) => { setV("remedy", name); setPanel(null); notify(`${name} added to the treatment plan`); }}
+          />
+        </SidePanel>
+      )}
+      {panel?.kind === "library" && (
+        <SidePanel title="Remedy library" onClose={() => setPanel(null)}>
+          <button type="button" className="press mb-3 text-sm font-medium text-brand-700 hover:underline" onClick={() => setPanel({ kind: "match" })}>← Back to suggestions</button>
+          <RemedyBrowser
+            compact
+            key={panel.slug}
+            initialSlug={panel.slug}
+            footer={(name) => (
+              <button type="button" className={`${btnGhost} mt-4`} onClick={() => toggleCand(name)}>
+                {candNames.includes(name) ? "✓ On shortlist — remove" : "+ Add to shortlist"}
+              </button>
+            )}
+          />
+        </SidePanel>
+      )}
+      {panel?.kind === "report" && (
         <SidePanel title="Read a report" onClose={() => setPanel(null)}>
           <ReportReader compact onSave={applyReport} />
         </SidePanel>
@@ -217,4 +259,27 @@ function readDraft(key: string): Draft | null {
   } catch {
     return null;
   }
+}
+
+function Decision({ names, why, onWhy, onUse }: { names: string[]; why: string; onWhy: (x: string) => void; onUse: (name: string) => void }) {
+  const [pick, setPick] = useState("");
+  const chosen = names.includes(pick) ? pick : names[0] ?? "";
+  return (
+    <div className="mt-5 rounded-2xl border border-line bg-surface p-4">
+      <h3 className="text-[13px] font-semibold text-stone-900">Your choice</h3>
+      {names.length === 0 ? (
+        <p className="mt-2 text-sm text-stone-500">Shortlist at least one remedy to choose from.</p>
+      ) : (
+        <>
+          <select className={`${input} mt-2`} aria-label="Remedy to prescribe" value={chosen} onChange={(e) => setPick(e.target.value)}>
+            {names.map((n) => <option key={n}>{n}</option>)}
+          </select>
+          <label className="mt-3 block text-sm font-medium text-stone-700" htmlFor="why">Why this remedy</label>
+          <textarea id="why" className={`${input} mt-1.5 min-h-20`} rows={3} value={why} onChange={(e) => onWhy(e.target.value)} placeholder="The symptoms and reasoning behind your choice" />
+          <p className="mt-1 text-xs text-stone-500">Saved with the visit as the rationale. Kept so the system can learn from your reasoning later.</p>
+          <button type="button" className={`${btn} mt-3`} onClick={() => onUse(chosen)}>Use {chosen} in the treatment plan</button>
+        </>
+      )}
+    </div>
+  );
 }
