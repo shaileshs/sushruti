@@ -22,6 +22,20 @@ When an id gets answered: move the answer to the module doc that needs it, then 
 | N2 | Login emails for doctor and trainee. | Not needed — no login in the first build (`00-roadmap.md` D8). |
 | Q2 | Quality-of-life scale? | Folded into Q1. |
 
+## 2a. Needed now — not yet sent (from the 2026-10-10 message)
+
+Ordered by urgency. Each has a default, so none stops the build, but the first two change what we build next.
+
+| id | Ask | Default if no answer |
+|----|-----|------------------------|
+| Q17 | She plans to use the app on new patients. OK to use test data only, on a private network only, until login ships? Or should login come first? | Test data only (`00-roadmap.md` G0, NFR-13). |
+| N18 | Priority order. Her message asks for six report types, several cancers, statistics, and a reasoning aid. Which comes first after the base module? | Base, then remedy library, then endoscopy reports, then the rest. |
+| Q15 | How does she decide a prescription "worked" or "failed"? Are cure, remission, pain management, quality of life, and life expectancy the right categories? How does she define each? | Use her five names as a dropdown. |
+| N15 | Charges: currency, one amount per visit or per medicine, what accounts needs to see. | One amount per visit, in rupees. |
+| N16 | Which cancers after oral, and in what order? Does breast come within this build? | Oral only. |
+| N14 | Which statistics software (SPSS, R, Excel, other)? Tests inside the app, or clean export only? | CSV export. |
+| N17 | Which report types first? Sample biopsy, MRI, PET, CT, and sonography reports, patient details removed. | Endoscopy first. |
+
 ## 3. Later modules — ask when we start that module
 
 | id | Module | Ask |
@@ -38,7 +52,6 @@ When an id gets answered: move the answer to the module doc that needs it, then 
 | Q10 | Matching | Show why each remedy scored as it did? (We recommend yes.) |
 | Q13 | ML | Expected patients in year one. |
 | Q14 | Matching / reasoning | Capture Dr. Sarkar's reasoning in-app, or keep separate? |
-| Q15 | Outcomes | How does she decide a prescription "worked" or "failed"? |
 
 ## 4. Paused — lawyer and privacy
 
@@ -51,7 +64,6 @@ Still exploring. Ask once we're closer to a real build with real patient data.
 | Q7 | Consent form text for storage and research use. |
 | Q11 | Research consent given? |
 | Q12 | Ethics-committee or journal approval needed? |
-| Q17 | OK to run on test data only, private network only, until login ships? |
 
 ## 5. Answered
 

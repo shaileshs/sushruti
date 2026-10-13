@@ -43,9 +43,10 @@ Visit:
 |---|---|---|---|---|
 | 1 | Primary site, subsite, side | text ×3 (side: left/right/midline/bilateral) | C | J |
 | 1 | Diagnosis and carcinoma type | text | C | J |
+| 1 | Cancer type (oral, breast, other), for filtering and research | enum + other | C | T |
 | 1 | Diagnosed on, at institution | date, text | O | J |
-| 2 | Histopathology: type, grade, key findings | text ×3 | C | J |
-| 3 | Imaging: MRI, CT, PET-CT, other. Each with date and result. | repeat | C | child |
+| 2 | Histopathology and biopsy: type, grade, key findings | text ×3 | C | J |
+| 3 | Imaging: MRI, CT, PET-CT, sonography, other. Each with date and result. | repeat | C | child |
 | 3 | Blood work and markers: test, result, date | repeat | C | child |
 | 4 | T, N, M, stage | text ×4 | C | T |
 | 4 | Staging system and edition, date | text, date | O | T |
@@ -156,14 +157,15 @@ Section 15, Treatment plan:
 
 | Field | Type / options | Tier | Store |
 |---|---|---|---|
-| **Prescription:** remedy, potency, dose, repetition | text ×4 | C | T |
+| **Prescription:** role (main / detox / supportive), remedy, potency, dose, repetition. One main remedy; other rows are optional. | enum + text ×4, repeat | C | child |
+| Charge taken: amount, note | number, text | C | T |
 | Reason and linked symptoms | text + links | C | J |
 | Conventional oncology plan, next appointment | text | C | J |
 | Supportive care (nutrition, pain, oral care) | text | O | J |
 | Investigations, referral, safety action | text | O | J |
 | Follow-up interval, what to reassess | text | C | J |
 
-Follow-up (template J). Same visit form with visit type `follow-up`. The page shows the last prescription and response at the top. Extra fields:
+Follow-up (template J). Same visit form with visit type `follow-up`. The page shows the last prescription and response at the top. The full first-visit history and all earlier prescriptions are one tap away. Extra fields:
 
 | Field | Type / options | Tier | Store |
 |---|---|---|---|
@@ -172,6 +174,8 @@ Follow-up (template J). Same visit form with visit type `follow-up`. The page sh
 | Oncology treatment or tests since last visit | text | O | J |
 | **Patient-reported response** | improved / unchanged / mixed / worsened / unclear | C | T |
 | Clinician assessment, with basis | text | C | J |
+| Outcome category: cure / remission / pain management / quality of life / life expectancy (set to be confirmed, Q15) | enum | C | T |
+| Date of death or last known alive (needed for life expectancy) | date + state | O | T |
 
 ## 10. Photos, record and research (template C, K)
 
@@ -198,7 +202,8 @@ Extends `01-base-module.md` §6.
 | `visits` | Add the typed columns marked `T`, `form_version`, `clinician`, and one JSON column `case`. |
 | `measures` | Folded into `visits` for the first build (default for Q4: one lesion). |
 | `visit_items` | New child table for the `repeat` lists. Columns: `visit_id`, `kind` (imaging, blood, nodes, treatment, medicine, homeopathic_prior, family, addiction, complaint, peculiar, score, candidate, alternative, expert), `position`, `data` JSON. |
-| `prescriptions` | New. `visit_id`, `remedy`, `potency`, `dose`, `repetition`, `reason`. One row per prescription event. |
+| `prescriptions` | New. `visit_id`, `role`, `remedy`, `potency`, `dose`, `repetition`, `reason`. One row per prescription event. |
+| `charges` | New. `visit_id`, `amount`, `currency`, `note`. |
 | `photos` | Add `view`, `consent`. |
 
 `visit_items` is one table for all lists, with `kind` and JSON `data`. This keeps the first build simple. If a list needs charting later, we move it to its own table.
@@ -209,6 +214,7 @@ These depend on answers in `02-client-questions.md`.
 
 - **Scoring and QoL tool:** unknown. Free-text fields until she names them.
 - **More than one lesion:** default is one. A yes moves the lesion fields to their own table (open item O1).
-- **Esophageal cancer:** not covered. It needs its own form.
+- **Esophageal and breast cancer:** not covered. Each needs its own form. `cancer type` is a field now so the data is filterable later.
+- **Outcome categories and charge detail:** proposed from `clientcom/oct10.md`. The doctor confirms them (Q15, N15).
 - **Potency and dose format:** free text until she shows how she writes them.
 - **Template extras:** we build all as optional. She may name some she never wants.

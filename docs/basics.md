@@ -83,3 +83,13 @@ The system should be patient-centric first, but it must also remember and learn 
 ### 3.5 Research comes later, but the data model must be ready now
 
 She expects research to start in 2–3 years, not now. In her view, homeopathy lacks recognition because it lacks data and proof in a form modern science accepts. She wants the system to remember and arrange data by current research methodology from the start, so it can be extracted for research once enough time has passed.
+
+## 4. Clinic flow and research ask (message of 2026-10-10)
+
+Full text: `clientcom/oct10.md`. She reviewed the demo layout and described the flow she wants.
+
+- **New patient:** history, then reports (endoscopy, biopsy, MRI, PET, CT, sonography), then AI remedy suggestions (several), then the remedy library for differential comparison, then clinical reasoning, then a recorded reason for the choice, then the prescription.
+- **Prescription:** mainly one remedy. Detox and supportive medicines may be added. Charges are recorded for the accounts department.
+- **Follow-up:** see the full original history and prescription. Enter changes, new symptoms, and observations. Continue or change, with the same remedy and decision support. Record the reason, remedy, potency, and charges again.
+- **Research:** by pathology (oral, breast, any cancer): patient counts and outcomes. Statistics inside the app, or export for statistics software. Per remedy: duration, effect, and the indications that supported it. Patient categories: cure, remission, pain management, quality of life, life expectancy.
+- **Scope:** oral cancer first, other cancers soon. She calls the whole "too huge a project".

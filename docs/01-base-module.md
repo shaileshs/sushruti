@@ -52,9 +52,13 @@ Until then: **the app must not run on a public URL, and must not hold real patie
 - FR-13 A user can add a visit to a patient. A visit has a date, a type (first visit or follow-up), and the case fields in FR-14.
 - FR-14 Case fields: the full list is in `04-form-definition.md`. It follows the doctor's 15-heading outline, plus optional template items. Fields we chart or filter are typed columns; the rest are structured JSON with a form version. Optional sections are collapsed by default. Oral cancer only; esophageal needs its own form (client Q5).
 - FR-14a Each visit can hold prescription events (remedy, potency, dose, repetition) and a decision (start, continue, repeat, change, withhold, investigate, refer). A follow-up visit shows the last prescription and response at the top.
+- FR-14c Each visit records the charge taken: amount and an optional note. The accounts department can view or export charges by date. Currency and detail level are open (`question-tracker.md` N15).
+- FR-14d A prescription has a role: main, detox, or supportive. A visit has one main remedy and may have other medicines. The doctor writes the reason for each decision (`04-form-definition.md` §9).
+- FR-14e Each follow-up visit records an outcome category: cure, remission, pain management, quality of life, or life expectancy. The set of categories is open until the doctor confirms it (`question-tracker.md` Q15).
 - FR-14b Measures have four states: value, absent, not assessed, not known. An empty cell is not a state.
 - FR-15 A user can edit a visit after saving. The audit log records each edit.
 - FR-16 A patient page shows visits in date order, newest first.
+- FR-16a When a user starts a follow-up, the full first-visit history and the earlier prescriptions are one tap away, not only the last prescription.
 - FR-17 A user can save a visit as a draft and finish it later.
 
 ### 4.5 Measures
@@ -121,7 +125,8 @@ All tables have `id`, `created_at`, `updated_at`, `created_by`, and `archived_at
 | `measures` | `visit_id`, `lesion_site`, `lesion_size_mm`, `lesion_size_mm_2`, `pain_0_10`, `clinical_grade`, `qol_scale`, `qol_score` |
 | `photos` | `visit_id`, `storage_path`, `site_label`, `view`, `consent`, `note` |
 | `visit_items` | `visit_id`, `kind`, `position`, `data` (JSON). Repeating lists: imaging, blood, complaints, and others. |
-| `prescriptions` | `visit_id`, `remedy`, `potency`, `dose`, `repetition`, `reason` |
+| `prescriptions` | `visit_id`, `role` (`main`, `detox`, `supportive`), `remedy`, `potency`, `dose`, `repetition`, `reason` |
+| `charges` | `visit_id`, `amount`, `currency`, `note` |
 | `audit_log` | `table_name`, `record_id`, `action`, `old_values`, `new_values`, `user_id`, `at` |
 
 Notes:

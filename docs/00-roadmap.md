@@ -37,7 +37,7 @@ Each module has its own requirements document. We write it just before we build 
 |--------|---------|------------|----------|
 | M1 Base | Login, patients, visits, metrics, lesion photos, trend chart, audit log | — | `01-base-module.md` |
 | M2 Remedy library | Parse the 600-page Word file into a searchable database. Browse and search. | M1 | Not yet written |
-| M3 Endoscopy extraction | Read endoscopy PDFs. Suggest tumor site, size, morphology. The user confirms each value. | M1 | Not yet written |
+| M3 Report reader | Read endoscopy PDFs first. Then biopsy, MRI, PET, CT, and sonography reports (client, 2026-10-10). Suggest values. The user confirms each value. | M1 | Not yet written |
 | M4 Matching | Rank remedies for a patient from M1, M2, M3 data, as a shortlist with reasons. | M1, M2, M3 | Not yet written |
 | M5 Analytics | Charts of prescriptions, outcomes, and trends. | M1 | Not yet written |
 | M6 De-identification and export | Strip identity data. Export CSV or XLSX. | M1 | Not yet written |
@@ -53,16 +53,20 @@ Notes on the order:
 
 Notes on scope growth (from the long-term vision, `basics.md` §1):
 
+- M2 must also open from inside the visit form, so the doctor can compare remedies while she decides (`clientcom/oct10.md`). A side panel or a link is enough.
 - M2 may grow from a search database into a fuller knowledge base — organ affinity and oncology associations, not only remedy text search.
-- M3 may expand to pathology reports and to the patient's own words, not only endoscopy PDFs.
+- M3 now covers biopsy, MRI, PET, CT, and sonography reports as well as endoscopy (`clientcom/oct10.md`). We start with endoscopy and add one report type at a time. It may also expand to the patient's own words.
 - M4 as scoped here is a transparent rules and text-search score (see `03-technical-decisions.md`). The client's long-term ask is a clinical reasoning engine that weighs symptoms the way an experienced clinician does. That depends on her work observing Dr. Sunirmal Sarkar's consultations (question-tracker.md N13) and is a separate, later effort — not a rewrite of M4.
 - M4's output must be a ranked shortlist with reasons, not one remedy: a case can have 50 or more candidates, and picking the exact one needs the doctor's own judgment (`basics.md` §3.1). M4 also needs to handle a case as a sequence — a remedy given, a response observed, then continue, repeat, change, or stop before ranking the next one (`basics.md` §3.2). This is a bigger shape than a one-time intake-to-remedy lookup, though M1's visit timeline already gives it a foundation.
 - M1's case fields (FR-14) will eventually need to capture deep constitutional and particular symptom detail — physical build, mental state, food and thirst preferences, thermal sensitivity, sleep, and more (`basics.md` §3.3) — not just short free text. M1 now captures this through the case form in `04-form-definition.md`.
+- Other cancers (breast and others) are coming (`clientcom/oct10.md`). M1 keeps the cancer type as a field on the case and does not hard-code oral cancer in the data model. Each cancer site still needs its own form (see client Q5 and `03-technical-decisions.md` O8).
+- Research (M5, M6) needs an outcome category per patient: cure, remission, pain management, quality of life, life expectancy. M1 records it from day one (`04-form-definition.md` §9). Her wording asks for statistics in the app or export for statistics software; M6 export comes first (`question-tracker.md` N14).
 - The outcome-learning loop (M7) needs case-level "what worked, what did not" data tied to each prescription in sequence, not only aggregate stats (`basics.md` §3.4). The client's own timeline for research use is 2–3 years (`basics.md` §3.5), which matches M7's gate below — but the data model should be able to hold this detail well before then.
 
 ## 5. Gates
 
 - **G1 — before M4.** The doctor defines what a "match" means. It must be a transparent score, not a probability of cure. The screen must say it is decision support for her judgment. The match must show which inputs caused each score. It must show a ranked shortlist, not one answer — that is how remedies are actually chosen (`basics.md` §3.1).
+- **G0 — before real patient data.** Decision D8 means no login. The doctor now plans to use the app on new patients. Real patient data waits until login ships or she accepts the NFR-13 limits (`question-tracker.md` Q17).
 - **G2 — before M6.** The doctor confirms that patients gave consent for research use. M1 records this consent from day one.
 - **G3 — before any research use.** The doctor confirms whether ethics committee approval is needed for journal submission.
 

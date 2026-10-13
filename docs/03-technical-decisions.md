@@ -43,6 +43,9 @@ Each item has a status:
 | O5 | Photo backup method, if the plan does not cover storage files. | Scheduled copy to a second bucket, or a script that runs on demand. | V2 |
 | O6 | Data retention and erasure behavior. | Archive only, or a hard delete with a delay. | Client answer Q6 and lawyer review |
 | O7 | How the audit log tells the doctor and trainee apart, with no login (decision D8). | A simple "who am I" picker, not authentication, so each entry is attributed correctly; or accept one shared identity until login ships. | Decision D8 |
+| O8 | Several cancer sites (oral now; breast and others soon). | Keep `cancer type` as a typed column; one form definition per site; shared tables stay the same. | Client answer Q5 and N16 |
+| O9 | Charges: currency, per visit or per medicine, who may see them. | One amount per visit to start. | Client answer N15 |
+| O10 | Research export format for statistics software. | CSV first; add other formats on request. | Client answer N14 |
 
 ## 4. Engineering practices (defaults)
 

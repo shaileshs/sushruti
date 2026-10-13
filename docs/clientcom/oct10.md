@@ -1,3 +1,31 @@
+# Oct 10 — summary
+
+Dr. Shah saw the new layout and liked it. She then described the full clinic flow she wants.
+
+- **Feedback:** very positive on the new layout.
+- **New patient flow:**
+  - Take history.
+  - Read reports: endoscopy, biopsy, MRI, PET scan, CT scan, sonography. She asks for a report reader "if possible".
+  - AI suggests the closest remedies. She expects several.
+  - She opens the remedy library to compare remedies (differential diagnosis) and decide.
+  - Clinical reasoning inside this step is "an added advantage".
+  - She records why a remedy was chosen. This may help machine learning later.
+  - She prescribes: mainly one remedy, plus optional detox and supportive medicines.
+  - She records the charges taken, for the accounts department.
+- **Follow-up flow:**
+  - She sees the original full history and prescription.
+  - She enters changes, new symptoms, and observations.
+  - She continues or changes the prescription, again with the remedy logic and clinical decision aid.
+  - Same record each time: new prescription, reason, remedy, potency, charges.
+- **Research:**
+  - By cancer type: oral, breast, any cancer. Number of patients and treatment outcome.
+  - Statistical analysis, or data exported in a format that statistics software can import.
+  - Per remedy: how long it was given, how well it worked, and which indications supported the result.
+  - Patient categories: cure, remission, pain management, quality of life, life expectancy.
+- **Scope:** oral cancer first, other cancers soon. She says this is "too huge a project".
+
+---
+
 Wow....the new layout looks amazing
 
 I am having goose bumps
