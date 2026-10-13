@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
-import { TestGuide } from "@/components/test-guide";
 import { ThemeToggle } from "@/components/theme-toggle";
 
 const ic = (d: string): ReactNode => (
@@ -13,7 +12,8 @@ const ic = (d: string): ReactNode => (
   </svg>
 );
 type Item = { href: string; label: string; icon: ReactNode };
-const base: Item[] = [{ href: "/", label: "Patients", icon: ic("M7 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2 17c0-3 2-5 5-5s5 2 5 5M14 4a2.5 2.5 0 0 1 0 5M15 12c2 .4 3 2 3 5") }];
+const base: Item[] = [
+  { href: "/test", label: "What to test", icon: ic("M5 10.5l3.5 3.5L15 6.5M3 3h14v14H3z") },{ href: "/", label: "Patients", icon: ic("M7 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM2 17c0-3 2-5 5-5s5 2 5 5M14 4a2.5 2.5 0 0 1 0 5M15 12c2 .4 3 2 3 5") }];
 const preview: Item[] = [
   { href: "/remedies", label: "Remedy library", icon: ic("M4 3h9a2 2 0 0 1 2 2v12H6a2 2 0 0 1-2-2V3ZM4 15a2 2 0 0 1 2-2h9") },
   { href: "/reports", label: "Report reader", icon: ic("M5 2h7l4 4v12H5V2ZM12 2v4h4M8 10h5M8 13h5") },
@@ -50,7 +50,6 @@ export function Nav() {
       </div>
       <div className="dash-b hidden md:block" />
       <div className="hidden pt-2 md:block" />
-      <TestGuide />
       {[...base, ...preview, reference].map(item)}
       <div className="ml-auto shrink-0 self-center md:hidden"><ThemeToggle /></div>
     </nav>
