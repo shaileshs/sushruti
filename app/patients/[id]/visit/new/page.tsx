@@ -5,11 +5,14 @@ import { notFound, useRouter } from "next/navigation";
 import { use, useEffect, useState, useSyncExternalStore } from "react";
 import { CaseForm, type PrevNums, type States, type Values } from "@/components/case-form";
 import { useDemo } from "@/components/demo-provider";
+import { ReportReader } from "@/components/report-reader";
+import { SidePanel } from "@/components/side-panel";
 import { LesionImage } from "@/components/lesion-image";
 import { Avatar } from "@/components/viz";
 import { btn, btnGhost, input } from "@/components/ui";
 import { PHOTO_VIEWS, sections, type Row, type Val } from "@/lib/form";
 import { fmtDate, lastVisit, type Patient } from "@/lib/mock";
+import type { ReportKind } from "@/lib/reports";
 
 export default function NewVisit(props: PageProps<"/patients/[id]/visit/new">) {
   const { id } = use(props.params);
@@ -33,6 +36,7 @@ function VisitForm({ p }: { p: Patient }) {
   const [st, setStates] = useState<States>(saved?.st ?? {});
   const [photos, setPhotos] = useState<{ view: string; consent: boolean }[]>(saved?.photos ?? []);
   const [restored, setRestored] = useState(!!saved);
+  const [panel, setPanel] = useState<"report" | null>(null);
   const [autoAt, setAutoAt] = useState<string | null>(null);
   const [touched, setTouched] = useState(false);
   const setV = (k: string, val: Val) => { setTouched(true); setValues((x) => ({ ...x, [k]: val })); };
@@ -52,6 +56,21 @@ function VisitForm({ p }: { p: Patient }) {
   const discard = () => {
     try { sessionStorage.removeItem(key); } catch { /* ignore */ }
     setValues({ site: prev.site, stage: prev.grade }); setStates({}); setPhotos([]); setRestored(false); setAutoAt(null); setTouched(false);
+  };
+  // Confirmed report values go into the form. The doctor can still edit them there.
+  const applyReport = (kind: ReportKind) => {
+    const get = (n: string) => kind.fields.find((f) => f.name === n)?.value ?? "";
+    if (kind.id === "biopsy") {
+      setV("hp_type", get("Type"));
+      setV("hp_grade", get("Grade"));
+      setV("hp_find", `Specimen: ${get("Specimen site")}`);
+    } else {
+      const rows = Array.isArray(v.imaging) ? (v.imaging as Row[]) : [];
+      const result = kind.fields.map((f) => `${f.name}: ${f.value}`).join("; ");
+      setV("imaging", [...rows.filter((r) => Object.values(r).some(Boolean)), { study: kind.label, date: new Date().toISOString().slice(0, 10), result }]);
+    }
+    setPanel(null);
+    notify(`${kind.label} values added to the visit`);
   };
   const prevNums: PrevNums = {
     size: { val: prev.sizeMm, goodDown: true },
@@ -160,7 +179,16 @@ function VisitForm({ p }: { p: Patient }) {
         <p className="mt-1 text-xs text-brand-800">{prev.sizeMm} mm · pain {prev.pain}/10 · QoL {prev.qol}</p>
       </div>
 
-      <CaseForm v={v} st={st} setV={setV} setSt={setSt} errors={errors} showSince prev={prevNums} baseline={{ site: prev.site, stage: prev.grade }} extra={{ id: "photos", n: "P", title: "Photos", node: photoNode }} />
+      <CaseForm v={v} st={st} setV={setV} setSt={setSt} errors={errors} showSince prev={prevNums} baseline={{ site: prev.site, stage: prev.grade }} sectionTop={{
+        s2: <button type="button" className={btnGhost} onClick={() => setPanel("report")}>Read a biopsy report</button>,
+        s3: <button type="button" className={btnGhost} onClick={() => setPanel("report")}>Read a report (MRI, CT, PET, sonography, endoscopy)</button>,
+      }} extra={{ id: "photos", n: "P", title: "Photos", node: photoNode }} />
+
+      {panel === "report" && (
+        <SidePanel title="Read a report" onClose={() => setPanel(null)}>
+          <ReportReader compact onSave={applyReport} />
+        </SidePanel>
+      )}
 
       <p className="mt-6 text-xs text-stone-500">
         Urgent bleeding, breathing difficulty, inability to swallow fluids, dehydration or fast swelling needs prompt medical care. This app never delays urgent care.

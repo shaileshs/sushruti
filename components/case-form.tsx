@@ -23,7 +23,7 @@ const filled = (f: Field, v: Values, st: States, base: Values) => {
 type Extra = { id: string; n: string; title: string; node: ReactNode };
 
 export function CaseForm({
-  v, st, setV, setSt, errors, extra, showSince, prev, baseline,
+  v, st, setV, setSt, errors, extra, showSince, prev, baseline, sectionTop,
 }: {
   v: Values; st: States; baseline: Values;
   setV: (k: string, val: Val) => void;
@@ -32,6 +32,7 @@ export function CaseForm({
   extra: Extra;
   showSince: boolean;
   prev: PrevNums;
+  sectionTop?: Record<string, ReactNode>;
 }) {
   const secs = sections.filter((s) => showSince || s.id !== "since");
   const all = [...secs.map((s) => ({ id: s.id, n: s.n, title: s.title })), { id: extra.id, n: extra.n, title: extra.title }];
@@ -191,6 +192,7 @@ export function CaseForm({
                   <div className="border-t border-stone-100 px-4 pb-4 pt-4">
                     {sec ? (
                       <>
+                        {sectionTop?.[s.id] && <div className="mb-4 flex flex-wrap gap-2">{sectionTop[s.id]}</div>}
                         <div className="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-2">{core.map(renderField)}</div>
                         {opt.length > 0 && (
                           <>
