@@ -175,7 +175,11 @@ export const sections: Section[] = [
   {
     id: "s15", n: "15", title: "Treatment plan",
     fields: [
-      text("remedy", "Remedy"), text("potency", "Potency"), text("dose", "Dose"), text("repeat", "Repetition"),
+      text("remedy", "Main remedy", { hint: "One remedy at a time. Add detox or supportive medicines below." }),
+      text("potency", "Potency"), text("dose", "Dose"), text("repeat", "Repetition"),
+      list("other_rx", "Detox and supportive medicines", ["Medicine", "Role (detox or supportive)", "Potency", "Dose and repetition"]),
+      text("charge", "Charge taken (₹)", { hint: "For the accounts department." }),
+      text("charge_note", "Charge note", { opt: true }),
       long("why", "Reason and symptoms linked to the decision"),
       text("oncplan", "Conventional oncology plan, next appointment"),
       text("interval", "Follow-up interval, what to reassess"),

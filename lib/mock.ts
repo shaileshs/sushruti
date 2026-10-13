@@ -14,6 +14,8 @@ export type Visit = {
   grade: string;
   qol: number; // 0-100, placeholder scale
   rx?: { remedy: string; potency: string; dose: string; repetition: string };
+  otherRx?: { medicine: string; role: string; potency: string; dose: string }[]; // detox and supportive medicines
+  charge?: number; // rupees, for accounts
   decision?: string;
   response?: string;
   detail?: { title: string; items: string[] }[]; // filled fields from the case form
@@ -131,6 +133,17 @@ rx("p3v1", "Phosphorus", "30C", "Start");
 rx("p3v2", "Phosphorus", "30C", "Continue", "Improved");
 rx("p7v1", "Nitricum acidum", "30C", "Start");
 rx("p7v2", "Nitricum acidum", "30C", "Repeat", "Mixed");
+
+// Invented supportive medicines and charges, so the timeline and the accounts total have something to show.
+const extras: Record<string, Visit["otherRx"]> = {
+  p1v1: [{ medicine: "Carcinosin", role: "Supportive", potency: "200C", dose: "Once a week" }],
+  p1v3: [{ medicine: "Hydrastis canadensis", role: "Detox", potency: "Q", dose: "5 drops, twice a day" }],
+  p7v1: [{ medicine: "Calendula (mouth rinse)", role: "Supportive", potency: "Q", dose: "10 drops in water, rinse twice a day" }],
+};
+patients.flatMap((p) => p.visits).forEach((vis, i) => {
+  vis.charge = vis.type === "First visit" ? 1500 : [500, 600, 500][i % 3];
+  if (extras[vis.id]) vis.otherRx = extras[vis.id];
+});
 
 export const lastVisit = (p: Patient) => p.visits[p.visits.length - 1];
 export const findPatient = (id: string) => patients.find((p) => p.id === id);

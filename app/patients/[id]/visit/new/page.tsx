@@ -94,6 +94,7 @@ function VisitForm({ p }: { p: Patient }) {
   if (v.size && st.size !== "Absent" && (size <= 0 || size > 300)) errors.size = "Enter a size between 1 and 300 mm.";
   if (v.pain && (!Number.isInteger(pain) || pain < 0 || pain > 10)) errors.pain = "Pain is a whole number from 0 to 10.";
   if (v.mouth && (mouth < 0 || mouth > 80)) errors.mouth = "Enter a mouth opening between 0 and 80 mm.";
+  if (v.charge && !(Number(v.charge) >= 0)) errors.charge = "Enter the amount as a number, for example 500.";
   const valid = Object.keys(errors).length === 0;
 
   const asText = (k: string, val: Val | undefined): string => {
@@ -126,6 +127,10 @@ function VisitForm({ p }: { p: Patient }) {
       grade: text(v.stage) || prev.grade,
       qol: numeric("qol", prev.qol),
       rx: text(v.remedy) ? { remedy: text(v.remedy), potency: text(v.potency), dose: text(v.dose), repetition: text(v.repeat) } : undefined,
+      otherRx: (Array.isArray(v.other_rx) ? (v.other_rx as Row[]) : [])
+        .filter((r) => r.medicine)
+        .map((r) => ({ medicine: r.medicine, role: r.role_detox_or_supportive_ ?? "", potency: r.potency ?? "", dose: r.dose_and_repetition ?? "" })),
+      charge: v.charge ? Number(v.charge) : undefined,
       decision: text(v.decision) || undefined,
       response: text(v.response) || undefined,
       detail,

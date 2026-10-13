@@ -65,6 +65,9 @@ function VisitItem({ v, latest }: { v: Visit; latest: boolean }) {
         <p className="mt-1 text-sm">
           {v.rx ? <><strong>{v.rx.remedy} {v.rx.potency}</strong> · {v.rx.dose}, {v.rx.repetition.toLowerCase()}</> : <span className="text-stone-500">No prescription recorded</span>}
         </p>
+        {v.otherRx && v.otherRx.length > 0 && (
+          <p className="text-xs text-stone-600">Also: {v.otherRx.map((o) => `${o.medicine}${o.potency ? ` ${o.potency}` : ""} (${o.role.toLowerCase() || "supportive"})`).join(", ")}</p>
+        )}
         <p className="text-xs text-stone-500">
           {v.site} · {v.sizeMm} mm · pain {v.pain}/10 · grade {v.grade} · QoL {v.qol}{" "}
           <span className="font-medium text-brand-700 group-hover:underline">{open ? "Hide details" : "Details"}</span>
