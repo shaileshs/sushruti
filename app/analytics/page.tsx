@@ -9,7 +9,7 @@ import { indicationsFor, monthlyVisits, outcomeCategories, outcomeTrend, prescri
 
 const grid = <CartesianGrid vertical={false} stroke="var(--color-line)" strokeDasharray="3 4" />;
 const axis = { tick: { fontSize: 11, fill: "var(--color-stone-500)" }, axisLine: false, tickLine: false } as const;
-const shades = ["#5f7a58", "#4c6649", "#5f7a58", "#788969", "#a4b89e", "#c8d5c2"];
+const shades = ["#7c5cbf", "#6a4aab", "#7c5cbf", "#9479d1", "#b8a5e0", "#d6cbee"];
 
 // One tooltip style for every chart on this page.
 const tip = (unit = "") => (
@@ -90,7 +90,7 @@ function ByCancer() {
                 <XAxis type="number" allowDecimals={false} {...axis} />
                 <YAxis type="category" dataKey="name" width={110} {...axis} />
                 {tip(" patients")}
-                <Bar dataKey="count" fill="#5f7a58" radius={[0, 8, 8, 0]} animationDuration={700} />
+                <Bar dataKey="count" fill="#7c5cbf" radius={[0, 8, 8, 0]} animationDuration={700} />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -178,7 +178,7 @@ export default function Analytics() {
                 <YAxis {...axis} unit="%" />
                 {tip("%")}
                 <Legend iconType="circle" wrapperStyle={{ fontSize: 12 }} />
-                <Line type="monotone" dataKey="arsenicum" name="Arsenicum album" stroke="#5f7a58" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} animationDuration={1000} />
+                <Line type="monotone" dataKey="arsenicum" name="Arsenicum album" stroke="#7c5cbf" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} animationDuration={1000} />
                 <Line type="monotone" dataKey="phosphorus" name="Phosphorus" stroke="#c8903a" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} animationDuration={1000} />
                 <Line type="monotone" dataKey="nitricum" name="Nitricum acidum" stroke="#b4553a" strokeWidth={3} dot={{ r: 3 }} activeDot={{ r: 6 }} animationDuration={1000} />
               </LineChart>

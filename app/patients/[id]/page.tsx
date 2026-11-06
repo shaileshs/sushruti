@@ -130,14 +130,14 @@ function PatientView({ p }: { p: Patient }) {
       </div>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
-        <Stat i={1} label="Lesion size" value={last.sizeMm} unit="mm" delta={last.sizeMm - first.sizeMm} goodDown series={p.visits.map((v) => v.sizeMm)} color="#5f7a58" />
+        <Stat i={1} label="Lesion size" value={last.sizeMm} unit="mm" delta={last.sizeMm - first.sizeMm} goodDown series={p.visits.map((v) => v.sizeMm)} color="#7c5cbf" />
         <Stat i={2} label="Pain" value={last.pain} unit="/10" delta={last.pain - first.pain} goodDown series={p.visits.map((v) => v.pain)} color="#be123c" />
         <Stat i={3} label="Quality of life" value={last.qol} delta={last.qol - first.qol} series={p.visits.map((v) => v.qol)} color="#a76720" />
         <Stat i={4} label="Visits" value={p.visits.length} note={days ? `over ${days} days` : "first visit"} series={p.visits.map((_, i) => i + 1)} color="#c8903a" />
       </div>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <Card title="Lesion size (mm)"><TrendChart data={chart} dataKey="size" unit="" color="#5f7a58" /></Card>
+        <Card title="Lesion size (mm)"><TrendChart data={chart} dataKey="size" unit="" color="#7c5cbf" /></Card>
         <Card title="Pain (0–10)"><TrendChart data={chart} dataKey="pain" unit="" domain={[0, 10]} color="#be123c" /></Card>
       </div>
 

@@ -19,7 +19,7 @@ export function Avatar({ name, size = 40 }: { name: string; size?: number }) {
   );
 }
 
-export function Sparkline({ values, color = "#5f7a58", w = 84, h = 28 }: { values: number[]; color?: string; w?: number; h?: number }) {
+export function Sparkline({ values, color = "#7c5cbf", w = 84, h = 28 }: { values: number[]; color?: string; w?: number; h?: number }) {
   if (values.length < 2) return <span className="text-xs text-stone-400">–</span>;
   const min = Math.min(...values), max = Math.max(...values), span = max - min || 1;
   const pts = values.map((v, i) => [3 + (i / (values.length - 1)) * (w - 6), 3 + (1 - (v - min) / span) * (h - 6)]);

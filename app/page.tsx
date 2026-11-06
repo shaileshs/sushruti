@@ -97,7 +97,7 @@ export default function PatientList() {
                   <p className="tnum text-sm font-medium text-stone-800">{l.sizeMm} mm</p>
                   <p className="text-xs text-stone-400">pain {l.pain}/10</p>
                 </div>
-                <div className="hidden md:block"><Sparkline values={p.visits.map((v) => v.sizeMm)} color={s === "attention" ? "#d97706" : "#5f7a58"} /></div>
+                <div className="hidden md:block"><Sparkline values={p.visits.map((v) => v.sizeMm)} color={s === "attention" ? "#d97706" : "#7c5cbf"} /></div>
                 <div className="text-right text-xs text-stone-500">
                   <p className="text-stone-700">{fmtDate(l.date)}</p>
                   <p>{p.visits.length} visit{p.visits.length > 1 ? "s" : ""}</p>
